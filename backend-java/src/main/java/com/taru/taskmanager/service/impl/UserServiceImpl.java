@@ -1,24 +1,18 @@
 package com.taru.taskmanager.service.impl;
 
-import com.taru.taskmanager.dto.ProjectDTO;
 import com.taru.taskmanager.dto.UserDTO;
 import com.taru.taskmanager.mapper.UserMapper;
 import com.taru.taskmanager.models.User;
 import com.taru.taskmanager.repository.UserRepository;
 import com.taru.taskmanager.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    @Autowired
     public UserServiceImpl(UserRepository userRepository) {
-
         this.userRepository = userRepository;
     }
 
@@ -48,6 +42,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
+        user.setJobTitle(userDTO.getJobTitle());
 
         User updatedUser = userRepository.save(user);
 
@@ -61,14 +56,6 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new RuntimeException("text")/*new UserNotFoundException("User with id = " + userId + " - not found!")*/);
 
         return UserMapper.mapToDto(user);
-    }
-
-    @Override
-    public List<ProjectDTO> getProjectsByUserId(int userId) {
-
-        // TODO
-        // return list of projects from projects and user_projects tables
-        return null;
     }
 
     @Override

@@ -3,9 +3,10 @@ package com.taru.taskmanager.service.impl;
 import com.taru.taskmanager.dto.RoleDTO;
 import com.taru.taskmanager.mapper.RoleMapper;
 import com.taru.taskmanager.models.Role;
+import com.taru.taskmanager.models.UserRole;
 import com.taru.taskmanager.repository.RoleRepository;
+import com.taru.taskmanager.repository.UserRoleRepository;
 import com.taru.taskmanager.service.RoleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,10 +15,12 @@ import java.util.List;
 public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
+    private final UserRoleRepository userRoleRepository;
 
-    public RoleServiceImpl(RoleRepository roleRepository) {
+    public RoleServiceImpl(RoleRepository roleRepository, UserRoleRepository userRoleRepository) {
 
         this.roleRepository = roleRepository;
+        this.userRoleRepository = userRoleRepository;
     }
 
     @Override
@@ -32,9 +35,10 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public RoleDTO getRoleByUserId(int userId) {
 
-        // TODO
-        // get role from user_roles and role tables
-        return null;
+        UserRole userRole = userRoleRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("text")/*new RoleNotFoundException("Role with id = " + roleId + " - not found!")*/);
+
+        return RoleMapper.mapToDto(userRole.getRole());
     }
 
     @Override
