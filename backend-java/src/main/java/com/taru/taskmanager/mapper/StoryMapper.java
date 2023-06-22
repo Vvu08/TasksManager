@@ -13,7 +13,6 @@ public class StoryMapper {
                 .description(story.getDescription())
                 .startDate(story.getStartDate())
                 .endDate(story.getEndDate())
-                .project(ProjectMapper.mapToDto(story.getProject()))
                 .build();
     }
 
@@ -25,7 +24,6 @@ public class StoryMapper {
                 .description(storyDTO.getDescription())
                 .startDate(storyDTO.getStartDate())
                 .endDate(storyDTO.getEndDate())
-                .project(ProjectMapper.mapToEntity(storyDTO.getProject()))
                 .build();
     }
 }

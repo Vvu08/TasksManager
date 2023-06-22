@@ -18,5 +18,4 @@ public class StoryDTO {
     private String description;
     private Date startDate;
     private Date endDate;
-    private ProjectDTO project;
 }

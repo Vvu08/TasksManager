@@ -13,7 +13,6 @@ public class UserMapper {
                 .password(user.getPassword())
                 .username(user.getUsername())
                 .jobTitle(user.getJobTitle())
-                .role(RoleMapper.mapToDto(user.getRole()))
                 .build();
     }
 
@@ -25,7 +24,6 @@ public class UserMapper {
                 .password(userDTO.getPassword())
                 .username(userDTO.getUsername())
                 .jobTitle(userDTO.getJobTitle())
-                .role(RoleMapper.mapToEntity(userDTO.getRole()))
                 .build();
     }
 }

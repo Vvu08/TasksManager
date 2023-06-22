@@ -3,7 +3,9 @@ package com.taru.taskmanager.service.impl;
 import com.taru.taskmanager.dto.ProjectDTO;
 import com.taru.taskmanager.mapper.ProjectMapper;
 import com.taru.taskmanager.models.Project;
+import com.taru.taskmanager.models.UserProjects;
 import com.taru.taskmanager.repository.ProjectRepository;
+import com.taru.taskmanager.repository.UserProjectsRepository;
 import com.taru.taskmanager.service.ProjectService;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +15,11 @@ import java.util.List;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final UserProjectsRepository userProjectsRepository;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository) {
+    public ProjectServiceImpl(ProjectRepository projectRepository, UserProjectsRepository userProjectsRepository) {
         this.projectRepository = projectRepository;
+        this.userProjectsRepository = userProjectsRepository;
     }
 
     @Override
@@ -58,6 +62,16 @@ public class ProjectServiceImpl implements ProjectService {
 
         return projects.stream()
                 .map(ProjectMapper::mapToDto)
+                .toList();
+    }
+
+    @Override
+    public List<ProjectDTO> getProjectsByUserId(int userId) {
+
+        List<UserProjects> userProjects = userProjectsRepository.findByUserId(userId);
+
+        return userProjects.stream()
+                .map(up -> ProjectMapper.mapToDto(up.getProject()))
                 .toList();
     }
 

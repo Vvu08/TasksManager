@@ -8,5 +8,7 @@ public interface StatusService {
 
     StatusDTO getStatusById(int statusId);
 
+    StatusDTO getStatusByTaskId(int taskId);
+
     List<StatusDTO> getAllStatuses();
 }

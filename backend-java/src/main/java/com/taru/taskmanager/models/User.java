@@ -6,9 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
 @Builder
 @AllArgsConstructor
@@ -29,11 +26,4 @@ public class User {
     private String password;
     @Column(name = "job_title")
     private String jobTitle;
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    private Role role;
-    @OneToMany(mappedBy = "user", orphanRemoval = true)
-    private List<Task> tasks;
 }

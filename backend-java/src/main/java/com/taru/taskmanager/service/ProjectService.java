@@ -14,5 +14,7 @@ public interface ProjectService {
 
     List<ProjectDTO> getAllProjects();
 
+    List<ProjectDTO> getProjectsByUserId(int userId);
+
     void deleteProjectById(int projectId);
 }
