@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface StoryService {
 
-    StoryDTO createStory(StoryDTO storyDTO);
+    StoryDTO createStory(int projectId, StoryDTO storyDTO);
 
     StoryDTO updateStoryById(int storyId, StoryDTO storyDTO);
 
