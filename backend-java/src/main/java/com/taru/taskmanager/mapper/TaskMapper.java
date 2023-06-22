@@ -12,9 +12,6 @@ public class TaskMapper {
                 .title(task.getTitle())
                 .description(task.getDescription())
                 .priority(task.getPriority())
-                .story(StoryMapper.mapToDto(task.getStory()))
-                .user(UserMapper.mapToDto(task.getUser()))
-                .status(StatusMapper.mapToDto(task.getStatus()))
                 .build();
     }
 
@@ -25,9 +22,6 @@ public class TaskMapper {
                 .title(taskDTO.getTitle())
                 .description(taskDTO.getDescription())
                 .priority(taskDTO.getPriority())
-                .story(StoryMapper.mapToEntity(taskDTO.getStory()))
-                .user(UserMapper.mapToEntity(taskDTO.getUser()))
-                .status(StatusMapper.mapToEntity(taskDTO.getStatus()))
                 .build();
     }
 }

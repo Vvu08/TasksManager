@@ -15,7 +15,5 @@ public class TaskDTO {
     private String title;
     private String description;
     private int priority;
-    private StoryDTO story;
-    private UserDTO user;
     private StatusDTO status;
 }
