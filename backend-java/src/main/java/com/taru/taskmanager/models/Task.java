@@ -24,15 +24,10 @@ public class Task {
     private String description;
     @Column(name = "priority")
     private int priority;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "story_id")
     private Story story;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinTable(name = "status_tasks",
-            joinColumns = @JoinColumn(name = "task_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "status_id", referencedColumnName = "id"))
-    private Status status;
 }
