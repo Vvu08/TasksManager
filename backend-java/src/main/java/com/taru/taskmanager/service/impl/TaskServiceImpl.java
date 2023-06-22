@@ -2,13 +2,8 @@ package com.taru.taskmanager.service.impl;
 
 import com.taru.taskmanager.dto.TaskDTO;
 import com.taru.taskmanager.mapper.TaskMapper;
-import com.taru.taskmanager.models.Story;
-import com.taru.taskmanager.models.Task;
-import com.taru.taskmanager.models.User;
-import com.taru.taskmanager.repository.StatusTaskRepository;
-import com.taru.taskmanager.repository.StoryRepository;
-import com.taru.taskmanager.repository.TaskRepository;
-import com.taru.taskmanager.repository.UserRepository;
+import com.taru.taskmanager.models.*;
+import com.taru.taskmanager.repository.*;
 import com.taru.taskmanager.service.TaskService;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +15,15 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final StoryRepository storyRepository;
     private final UserRepository userRepository;
-    private final StatusTaskRepository statusTaskRepository;
+    private final StatusRepository statusRepository;
+    private final StatusTasksRepository statusTasksRepository;
 
-    public TaskServiceImpl(TaskRepository taskRepository, StoryRepository storyRepository, UserRepository userRepository, StatusTaskRepository statusTaskRepository) {
+    public TaskServiceImpl(TaskRepository taskRepository, StoryRepository storyRepository, UserRepository userRepository, StatusRepository statusRepository, StatusTasksRepository statusTasksRepository) {
         this.taskRepository = taskRepository;
         this.storyRepository = storyRepository;
         this.userRepository = userRepository;
-        this.statusTaskRepository = statusTaskRepository;
+        this.statusRepository = statusRepository;
+        this.statusTasksRepository = statusTasksRepository;
     }
 
     @Override
@@ -38,6 +35,15 @@ public class TaskServiceImpl implements TaskService {
 
         task.setStory(story);
         task = taskRepository.save(task);
+
+        Status status = statusRepository.findById(1)
+                .orElseThrow(() -> new RuntimeException("text")/*new StatusNotFoundException("Status with id = " + statusId + " - not found!")*/);
+        statusTasksRepository.save(
+                new StatusTasks(
+                        new StatusTasksId(task.getId(), status.getId()),
+                        task,
+                        status
+                ));
 
         return TaskMapper.mapToDto(task);
     }
