@@ -48,7 +48,8 @@ public class UserRoleServiceImpl implements UserRoleService {
                         userId,
                         roleId),
                     user,
-                    role));
+                    role)
+        );
     }
 
     @Override
