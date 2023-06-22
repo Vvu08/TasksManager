@@ -1,6 +1,5 @@
 package com.taru.taskmanager.service;
 
-
 public interface UserRoleService {
 
     boolean existsByUserId(int userId);
