@@ -1,0 +1,13 @@
+.tasks {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 1s;
+    -webkit-transition: max-height 1s;
+    -moz-transition: max-height 1s;
+    -ms-transition: max-height 1s;
+    -o-transition: max-height 1s;
+}
+
+.tasks.open {
+    max-height: 1000px;
+}
