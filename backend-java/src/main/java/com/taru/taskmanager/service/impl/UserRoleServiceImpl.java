@@ -24,12 +24,6 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     @Override
-    public boolean existsByUserId(int userId) {
-
-        return userRoleRepository.existsByUserId(userId);
-    }
-
-    @Override
     public void createUserRole(int userId, int roleId) {
 
         User user = userRepository.findById(userId)
