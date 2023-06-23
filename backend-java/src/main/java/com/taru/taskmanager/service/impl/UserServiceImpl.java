@@ -4,6 +4,8 @@ import com.taru.taskmanager.dto.UserDTO;
 import com.taru.taskmanager.mapper.UserMapper;
 import com.taru.taskmanager.models.User;
 import com.taru.taskmanager.repository.UserRepository;
+import com.taru.taskmanager.service.RoleService;
+import com.taru.taskmanager.service.UserRoleService;
 import com.taru.taskmanager.service.UserService;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +13,13 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final UserRoleService userRoleService;
+    private final RoleService roleService;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, UserRoleService userRoleService, RoleService roleService) {
         this.userRepository = userRepository;
+        this.userRoleService = userRoleService;
+        this.roleService = roleService;
     }
 
     @Override
@@ -23,14 +29,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Boolean existsByEmail(String email) {
+
+        return userRepository.existsByEmail(email);
+    }
+
+    @Override
     public UserDTO createUser(UserDTO userDTO) {
 
         User user = UserMapper.mapToEntity(userDTO);
         // TODO security
         // user.setPassword(user.getPassword());
-        userRepository.save(user);
+        user = userRepository.save(user);
 
-        return UserMapper.mapToDto(user);
+        userRoleService.createUserRole(user.getId(), 1);
+
+        UserDTO result = UserMapper.mapToDto(user);
+        result.setRole(roleService.getRoleByUserId(user.getId()));
+
+        return result;
     }
 
     @Override
@@ -46,7 +63,10 @@ public class UserServiceImpl implements UserService {
 
         User updatedUser = userRepository.save(user);
 
-        return UserMapper.mapToDto(updatedUser);
+        UserDTO result = UserMapper.mapToDto(updatedUser);
+        result.setRole(roleService.getRoleByUserId(updatedUser.getId()));
+
+        return result;
     }
 
     @Override
@@ -55,12 +75,16 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("text")/*new UserNotFoundException("User with id = " + userId + " - not found!")*/);
 
-        return UserMapper.mapToDto(user);
+        UserDTO result = UserMapper.mapToDto(user);
+        result.setRole(roleService.getRoleByUserId(user.getId()));
+
+        return result;
     }
 
     @Override
     public void deleteUserById(int userId) {
 
+        userRoleService.deleteUserRoleByUserId(userId);
         userRepository.deleteById(userId);
     }
 }

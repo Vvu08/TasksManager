@@ -6,6 +6,8 @@ public interface UserService {
 
     Boolean existsByUsername(String username);
 
+    Boolean existsByEmail(String email);
+
     UserDTO createUser(UserDTO user);
 
     UserDTO updateUserById(int userId, UserDTO user);

@@ -73,4 +73,12 @@ public class UserRoleServiceImpl implements UserRoleService {
                         user,
                         role));
     }
+
+    @Override
+    public void deleteUserRoleByUserId(int userId) {
+
+        UserRole userRole = userRoleRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("text"));
+        userRoleRepository.deleteById(new UserRoleId(userId, userRole.getRole().getId()));
+    }
 }
