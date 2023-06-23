@@ -78,6 +78,12 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void deleteProjectById(int projectId) {
 
+        List<UserProjects> userProjects = userProjectsRepository.findByProjectId(projectId);
+
+        for (var up : userProjects) {
+            userProjectsRepository.deleteById(up.getId());
+        }
+
         projectRepository.deleteById(projectId);
     }
 }
