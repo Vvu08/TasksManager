@@ -9,6 +9,8 @@ import com.taru.taskmanager.service.UserRoleService;
 import com.taru.taskmanager.service.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -79,6 +81,19 @@ public class UserServiceImpl implements UserService {
         result.setRole(roleService.getRoleByUserId(user.getId()));
 
         return result;
+    }
+
+    @Override
+    public List<UserDTO> getAllUsers() {
+
+        List<User> users = userRepository.findAll();
+
+        return users.stream()
+                .map(u -> {
+                    UserDTO userDTO = UserMapper.mapToDto(u);
+                    userDTO.setRole(roleService.getRoleByUserId(u.getId()));
+                    return userDTO;
+                }).toList();
     }
 
     @Override
