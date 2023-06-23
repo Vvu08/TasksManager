@@ -44,6 +44,19 @@ public class TaskController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PutMapping("/task/{taskId}/updateStatus/{statusId}")
+    public ResponseEntity<String> updateTaskStatusByTaskId(
+            @PathVariable("taskId") int taskId,
+            @PathVariable("statusId") int statusId
+    ) {
+
+        statusTasksService.updateTaskStatusByTaskId(taskId, statusId);
+
+        return new ResponseEntity<>(
+                "Status in task with id = " + taskId + " - was updated to = " + statusId,
+                HttpStatus.OK);
+    }
+
     @PostMapping("/task/{taskId}/assign/{userId}")
     public ResponseEntity<String> assignUserToTask(
             @PathVariable("taskId") int taskId,
