@@ -66,10 +66,4 @@ public class UserProjectServiceImpl implements UserProjectService {
                         user,
                         newProject));
     }
-
-    @Override
-    public void deleteUserProjectsById(UserProjectsId userProjectsId) {
-
-        userProjectsRepository.deleteById(userProjectsId);
-    }
 }

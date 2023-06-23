@@ -1,6 +1,7 @@
 package com.taru.taskmanager.service.impl;
 
 import com.taru.taskmanager.dto.TaskDTO;
+import com.taru.taskmanager.mapper.StatusMapper;
 import com.taru.taskmanager.mapper.TaskMapper;
 import com.taru.taskmanager.models.*;
 import com.taru.taskmanager.repository.*;
@@ -45,7 +46,10 @@ public class TaskServiceImpl implements TaskService {
                         status
                 ));
 
-        return TaskMapper.mapToDto(task);
+        TaskDTO result = TaskMapper.mapToDto(task);
+        result.setStatus(StatusMapper.mapToDto(status));
+
+        return result;
     }
 
     @Override
@@ -60,7 +64,10 @@ public class TaskServiceImpl implements TaskService {
 
         Task updatedTask = taskRepository.save(task);
 
-        return TaskMapper.mapToDto(updatedTask);
+        TaskDTO result = TaskMapper.mapToDto(updatedTask);
+        result.setStatus(StatusMapper.mapToDto(statusTasksRepository.findByTaskId(updatedTask.getId()).get().getStatus()));
+
+        return result;
     }
 
     @Override
@@ -82,7 +89,10 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new RuntimeException("text")/*new TaskNotFoundException("Task with id = " + taskId + " - not found!")*/);
 
-        return TaskMapper.mapToDto(task);
+        TaskDTO result = TaskMapper.mapToDto(task);
+        result.setStatus(StatusMapper.mapToDto(statusTasksRepository.findByTaskId(task.getId()).get().getStatus()));
+
+        return result;
     }
 
     @Override
@@ -91,7 +101,11 @@ public class TaskServiceImpl implements TaskService {
         List<Task> tasks = taskRepository.findAll();
 
         return tasks.stream()
-                .map(TaskMapper::mapToDto)
+                .map(task -> {
+                    TaskDTO result = TaskMapper.mapToDto(task);
+                    result.setStatus(StatusMapper.mapToDto(statusTasksRepository.findByTaskId(task.getId()).get().getStatus()));
+                    return result;
+                })
                 .toList();
     }
 
@@ -101,7 +115,11 @@ public class TaskServiceImpl implements TaskService {
         List<Task> tasks = taskRepository.findByUserId(userId);
 
         return tasks.stream()
-                .map(TaskMapper::mapToDto)
+                .map(task -> {
+                    TaskDTO result = TaskMapper.mapToDto(task);
+                    result.setStatus(StatusMapper.mapToDto(statusTasksRepository.findByTaskId(task.getId()).get().getStatus()));
+                    return result;
+                })
                 .toList();
     }
 
@@ -111,7 +129,11 @@ public class TaskServiceImpl implements TaskService {
         List<Task> tasks = taskRepository.findByStoryId(storyId);
 
         return tasks.stream()
-                .map(TaskMapper::mapToDto)
+                .map(task -> {
+                    TaskDTO result = TaskMapper.mapToDto(task);
+                    result.setStatus(StatusMapper.mapToDto(statusTasksRepository.findByTaskId(task.getId()).get().getStatus()));
+                    return result;
+                })
                 .toList();
     }
 

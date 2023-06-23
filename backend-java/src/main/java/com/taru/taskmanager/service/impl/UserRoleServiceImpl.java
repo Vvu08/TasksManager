@@ -24,12 +24,6 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     @Override
-    public boolean existsByUserId(int userId) {
-
-        return userRoleRepository.existsByUserId(userId);
-    }
-
-    @Override
     public void createUserRole(int userId, int roleId) {
 
         User user = userRepository.findById(userId)
@@ -72,5 +66,13 @@ public class UserRoleServiceImpl implements UserRoleService {
                                 roleId),
                         user,
                         role));
+    }
+
+    @Override
+    public void deleteUserRoleByUserId(int userId) {
+
+        UserRole userRole = userRoleRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("text"));
+        userRoleRepository.deleteById(new UserRoleId(userId, userRole.getRole().getId()));
     }
 }
