@@ -44,3 +44,7 @@ body {
 .status-col {
   min-height: calc(100vh - 20rem);
 }
+
+.w-30 {
+  width: 11.8rem;
+}
