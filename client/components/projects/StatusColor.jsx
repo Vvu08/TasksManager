@@ -5,7 +5,7 @@ function StatusColor({ status }) {
   else if (status === 'Inactive')
     return <div className='bg-neutral-700 w-6'></div>
   else if (status === 'Draft') return <div className='bg-violet-700 w-6'></div>
-  else return <div className='bg-emerald-700 w-6'></div>
+  else return <div className='bg-emerald-800 w-6'></div>
 }
 
 export default StatusColor

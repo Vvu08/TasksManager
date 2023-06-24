@@ -1,9 +1,10 @@
 import { Inter } from 'next/font/google'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Layout from '../layouts'
 import { useSelector } from 'react-redux'
 import { Statistic, StatusColor } from '@/components'
+import { useRouter } from 'next/router'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -37,6 +38,11 @@ export default function Home() {
     labels: ['Tasks Done', 'In Progress', 'Tasks to Do', 'Tasks to Review'],
     values: [30, 3, 25, 5],
   }
+  const router = useRouter()
+
+  useEffect(() => {
+    !role && router.push('/auth/login')
+  }, [role])
 
   return (
     <Layout keywords={'main page'}>
@@ -48,8 +54,8 @@ export default function Home() {
           {projects.map((project) => (
             <Link href={`/projects/${project.id}`} key={project.id}>
               <div className='bg-zinc-900 hover:bg-zinc-800 flex transition ease-in-out'>
+                <StatusColor status={project.status} />
                 <div className='p-5'>
-                  <StatusColor status={project.status} />
                   <h2>{project.title}</h2>
                   <p className='text-sm text-gray-400'>{project.status}</p>
                 </div>

@@ -1,28 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import statuses from '@/utils/status'
 import SVGRenderer from '../SVGRenderer'
+import usePopup from '@/hooks/usePopup'
 
 function SelectStatus({ value, setValue, disabled, isFilter }) {
-  const [isOpen, setIsOpen] = useState(false)
+  const { isOpen, toggle } = usePopup('status-dropdown')
   const matchedStatus = statuses.find((status) => status.value === value)
-
-  const toggleDropdown = () => setIsOpen(!isOpen)
 
   const selectStatus = (selectedValue) => {
     setValue(selectedValue)
-    setIsOpen(false)
+    toggle()
   }
-
-  const handleOutsideClick = (e) => {
-    if (e.target.closest('.status-dropdown')) return
-    setIsOpen(false)
-  }
-
-  useEffect(() => {
-    isOpen
-      ? document.addEventListener('mousedown', handleOutsideClick)
-      : document.removeEventListener('mousedown', handleOutsideClick)
-  })
 
   return (
     <div>
@@ -32,7 +20,7 @@ function SelectStatus({ value, setValue, disabled, isFilter }) {
             ? 'border-slate-500/50 cursor-pointer '
             : 'border-transparent'
         }`}
-        onClick={!disabled ? toggleDropdown : undefined}
+        onClick={!disabled ? toggle : undefined}
         disabled={disabled}
       >
         {matchedStatus ? (

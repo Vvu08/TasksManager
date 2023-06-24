@@ -47,7 +47,7 @@ function Statistic({ data, type }) {
   }, [data, type])
 
   return (
-    <canvas id='chart' width='400' height='100' className='chart mx-5'></canvas>
+    <canvas id='chart' width='300' height='100' className='chart mx-5'></canvas>
   )
 }
 

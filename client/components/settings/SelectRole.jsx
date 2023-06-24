@@ -1,33 +1,21 @@
-import { useState, useEffect } from 'react'
+import usePopup from '@/hooks/usePopup'
 
 const roles = ['Admin', 'Manager', 'User']
 
 function SelectRole({ value, setValue }) {
-  const [isOpen, setIsOpen] = useState(false)
+  const { isOpen, toggle } = usePopup('role-dropdown')
   const matchedRole = roles.find((role) => role === value)
-
-  const toggleDropdown = () => setIsOpen(!isOpen)
 
   const selectRole = (selectedValue) => {
     setValue(selectedValue)
-    setIsOpen(false)
+    toggle()
   }
 
-  const handleOutsideClick = (e) => {
-    if (e.target.closest('.role-dropdown')) return
-    setIsOpen(false)
-  }
-
-  useEffect(() => {
-    isOpen
-      ? document.addEventListener('mousedown', handleOutsideClick)
-      : document.removeEventListener('mousedown', handleOutsideClick)
-  })
   return (
     <div>
       <div
         className='cursor-pointer flex text-gray-300 gap-1 bg-transparent w-full overflow-hidden resize-none px-2'
-        onClick={toggleDropdown}
+        onClick={toggle}
       >
         {matchedRole}
         <svg

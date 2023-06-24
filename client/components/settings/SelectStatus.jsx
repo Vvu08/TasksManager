@@ -1,33 +1,21 @@
-import { useState, useEffect } from 'react'
 import projectStatuses from '@/utils/projectStatus'
 import SVGRenderer from '../SVGRenderer'
+import usePopup from '@/hooks/usePopup'
 
 function SelectStatus({ value, setValue }) {
-  const [isOpen, setIsOpen] = useState(false)
+  const { isOpen, toggle } = usePopup('status-dropdown')
   const matchedStatus = projectStatuses.find((status) => status.value === value)
-
-  const toggleDropdown = () => setIsOpen(!isOpen)
 
   const selectStatus = (selectedValue) => {
     setValue(selectedValue)
-    setIsOpen(false)
+    toggle()
   }
 
-  const handleOutsideClick = (e) => {
-    if (e.target.closest('.status-dropdown')) return
-    setIsOpen(false)
-  }
-
-  useEffect(() => {
-    isOpen
-      ? document.addEventListener('mousedown', handleOutsideClick)
-      : document.removeEventListener('mousedown', handleOutsideClick)
-  })
   return (
     <div>
       <div
         className='cursor-pointer flex text-gray-300 gap-1 bg-transparent w-full overflow-hidden resize-none p-2'
-        onClick={toggleDropdown}
+        onClick={toggle}
       >
         <SVGRenderer svgCode={matchedStatus.image} />
         {matchedStatus.value}

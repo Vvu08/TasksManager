@@ -1,35 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import SVGRenderer from '../SVGRenderer'
 import { priorities } from '@/utils/priorities'
+import usePopup from '@/hooks/usePopup'
 
 function SelectPriority({ value, setValue, disabled, isFilter }) {
   const [isClient, setIsClient] = useState(false)
-  const [isOpen, setIsOpen] = useState(false)
+  const { isOpen, toggle } = usePopup('priority-dropdown')
   const matchedPriority = priorities.find(
     (priority) => priority.value === value
   )
-
   useEffect(() => {
     setIsClient(true)
   }, [])
 
-  const toggleDropdown = () => setIsOpen(!isOpen)
-
   const selectPriority = (selectedValue) => {
     setValue(selectedValue)
-    setIsOpen(false)
+    toggle()
   }
-
-  const handleOutsideClick = (e) => {
-    if (e.target.closest('.priority-dropdown')) return
-    setIsOpen(false)
-  }
-
-  useEffect(() => {
-    isOpen
-      ? document.addEventListener('mousedown', handleOutsideClick)
-      : document.removeEventListener('mousedown', handleOutsideClick)
-  })
 
   return (
     <div>
@@ -39,7 +26,7 @@ function SelectPriority({ value, setValue, disabled, isFilter }) {
             ? 'border-slate-500/50 cursor-pointer '
             : 'border-transparent'
         }`}
-        onClick={!disabled ? toggleDropdown : undefined}
+        onClick={!disabled ? toggle : undefined}
         disabled={disabled}
       >
         {matchedPriority ? (

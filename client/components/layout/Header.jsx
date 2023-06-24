@@ -8,7 +8,7 @@ function Header() {
     <header className='bg-zinc-900 pt-3'>
       <ul className='grid grid-cols-2 py-4 px-10 font-medium text-slate-200 items-center'>
         <li className='text-lg '>Tasks Management </li>
-        <li className='ml-auto pr-10 '>
+        <li className='flex items-center ml-auto pr-10 '>
           <Link
             href={'/'}
             className=' font-semibold mr-8 text-slate-400 hover:text-slate-300'
@@ -21,9 +21,9 @@ function Header() {
 
           <button
             onClick={() => setOpen(!open)}
-            className='bg-slate-400 hover:bg-slate-300 text-slate-900 font-semibold py-2 px-4 rounded '
+            className='whitespace-nowrap bg-slate-400 hover:bg-slate-300 text-slate-900 font-semibold text-sm py-2 px-4 rounded '
           >
-            Create Project
+            + Project
           </button>
         </li>
       </ul>
