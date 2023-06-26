@@ -6,6 +6,7 @@ import com.taru.taskmanager.service.StatusTasksService;
 import com.taru.taskmanager.service.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class TaskController {
         this.statusTasksService = statusTasksService;
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
     @PostMapping("/task")
     public ResponseEntity<TaskDTO> createTask(
             @RequestBody TaskDTO taskDTO,
@@ -33,6 +35,7 @@ public class TaskController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
     @PutMapping("/task/{id}")
     public ResponseEntity<TaskDTO> updateTaskById(
             @RequestBody TaskDTO taskDTO,
@@ -44,6 +47,7 @@ public class TaskController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PutMapping("/task/{taskId}/updateStatus/{statusId}")
     public ResponseEntity<String> updateTaskStatusByTaskId(
             @PathVariable("taskId") int taskId,
@@ -57,6 +61,7 @@ public class TaskController {
                 HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/task/{taskId}/assign/{userId}")
     public ResponseEntity<String> assignUserToTask(
             @PathVariable("taskId") int taskId,
@@ -103,6 +108,7 @@ public class TaskController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     @DeleteMapping("/task/{id}")
     public ResponseEntity<String> deleteUserById(@PathVariable("id") int taskId) {
 

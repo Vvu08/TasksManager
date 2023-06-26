@@ -5,6 +5,7 @@ import com.taru.taskmanager.service.UserRoleService;
 import com.taru.taskmanager.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,6 +38,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/user/{id}")
     public ResponseEntity<UserDTO> updateUserById(@RequestBody UserDTO userDTO, @PathVariable("id") int userId) {
 
@@ -45,6 +47,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/user/{id}/updateRole")
     public ResponseEntity<UserDTO> updateUserRoleByUserId(
             @PathVariable("id") int userId,
@@ -58,6 +61,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/user/{id}")
     public ResponseEntity<String> deleteUserById(@PathVariable("id") int userId) {
 
