@@ -2,11 +2,16 @@ package com.taru.taskmanager.service.impl;
 
 import com.taru.taskmanager.dto.UserDTO;
 import com.taru.taskmanager.mapper.UserMapper;
+import com.taru.taskmanager.models.Task;
 import com.taru.taskmanager.models.User;
+import com.taru.taskmanager.models.UserProjects;
+import com.taru.taskmanager.repository.TaskRepository;
+import com.taru.taskmanager.repository.UserProjectsRepository;
 import com.taru.taskmanager.repository.UserRepository;
 import com.taru.taskmanager.service.RoleService;
 import com.taru.taskmanager.service.UserRoleService;
 import com.taru.taskmanager.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,11 +22,17 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserRoleService userRoleService;
     private final RoleService roleService;
+    private final TaskRepository taskRepository;
+    private final UserProjectsRepository userProjectsRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, UserRoleService userRoleService, RoleService roleService) {
+    public UserServiceImpl(UserRepository userRepository, UserRoleService userRoleService, RoleService roleService, TaskRepository taskRepository, UserProjectsRepository userProjectsRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userRoleService = userRoleService;
         this.roleService = roleService;
+        this.taskRepository = taskRepository;
+        this.userProjectsRepository = userProjectsRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -40,8 +51,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO createUser(UserDTO userDTO) {
 
         User user = UserMapper.mapToEntity(userDTO);
-        // TODO security
-        // user.setPassword(user.getPassword());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user = userRepository.save(user);
 
         userRoleService.createUserRole(user.getId(), 1);
@@ -60,7 +70,7 @@ public class UserServiceImpl implements UserService {
 
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setJobTitle(userDTO.getJobTitle());
 
         User updatedUser = userRepository.save(user);
@@ -99,6 +109,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUserById(int userId) {
 
+        List<Task> tasks = taskRepository.findByUserId(userId);
+        tasks.forEach(t -> {
+            t.setUser(null);
+            taskRepository.save(t);
+        });
+        List<UserProjects> userProjects = userProjectsRepository.findByUserId(userId);
+        userProjects.forEach(us -> {
+            userProjectsRepository.deleteById(us.getId());
+        });
         userRoleService.deleteUserRoleByUserId(userId);
         userRepository.deleteById(userId);
     }

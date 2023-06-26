@@ -21,7 +21,7 @@ public class ProjectController {
         this.userProjectService = userProjectService;
     }
 
-    @PostMapping("/project/create")
+    @PostMapping("/project")
     public ResponseEntity<ProjectDTO> createProject(@RequestBody ProjectDTO projectDTO) {
 
         ProjectDTO response = projectService.createProject(projectDTO);
@@ -43,7 +43,7 @@ public class ProjectController {
         );
     }
 
-    @PutMapping("/project/{id}/update")
+    @PutMapping("/project/{id}")
     public ResponseEntity<ProjectDTO> updateProjectById(
             @RequestBody ProjectDTO projectDTO,
             @PathVariable("id") int projectId
@@ -78,7 +78,7 @@ public class ProjectController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/project/{id}/delete")
+    @DeleteMapping("/project/{id}")
     public ResponseEntity<String> deleteUserById(@PathVariable("id") int projectId) {
 
         projectService.deleteProjectById(projectId);

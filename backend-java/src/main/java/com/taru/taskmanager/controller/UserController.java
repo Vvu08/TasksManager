@@ -21,20 +21,6 @@ public class UserController {
         this.userRoleService = userRoleService;
     }
 
-    @PostMapping("/user/create")
-    public ResponseEntity<String> createUser(@RequestBody UserDTO userDTO) {
-
-        if (userService.existsByUsername(userDTO.getUsername())) {
-            return new ResponseEntity<>("Username is taken!", HttpStatus.BAD_REQUEST);
-        } else if (userService.existsByEmail(userDTO.getEmail())) {
-            return new ResponseEntity<>("Email is taken!", HttpStatus.BAD_REQUEST);
-        }
-
-        userService.createUser(userDTO);
-
-        return new ResponseEntity<>("User registered!", HttpStatus.CREATED);
-    }
-
     @GetMapping("/user/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable("id") int userId) {
 
@@ -51,7 +37,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("/user/{id}/update")
+    @PutMapping("/user/{id}")
     public ResponseEntity<UserDTO> updateUserById(@RequestBody UserDTO userDTO, @PathVariable("id") int userId) {
 
         UserDTO response = userService.updateUserById(userId, userDTO);
@@ -72,7 +58,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/user/{id}/delete")
+    @DeleteMapping("/user/{id}")
     public ResponseEntity<String> deleteUserById(@PathVariable("id") int userId) {
 
         userService.deleteUserById(userId);

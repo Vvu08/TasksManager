@@ -22,7 +22,7 @@ public class TaskController {
         this.statusTasksService = statusTasksService;
     }
 
-    @PostMapping("/task/create")
+    @PostMapping("/task")
     public ResponseEntity<TaskDTO> createTask(
             @RequestBody TaskDTO taskDTO,
             @RequestParam(value = "storyId") int storyId
@@ -33,7 +33,7 @@ public class TaskController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PutMapping("/task/{id}/update")
+    @PutMapping("/task/{id}")
     public ResponseEntity<TaskDTO> updateTaskById(
             @RequestBody TaskDTO taskDTO,
             @PathVariable("id") int taskId
@@ -103,7 +103,7 @@ public class TaskController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/task/{id}/delete")
+    @DeleteMapping("/task/{id}")
     public ResponseEntity<String> deleteUserById(@PathVariable("id") int taskId) {
 
         taskService.deleteTaskById(taskId);
