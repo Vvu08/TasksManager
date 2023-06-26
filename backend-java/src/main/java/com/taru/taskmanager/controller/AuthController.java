@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,11 +24,13 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(AuthenticationManager authenticationManager, UserService userService, UserRepository userRepository) {
+    public AuthController(AuthenticationManager authenticationManager, UserService userService, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/register")
@@ -49,17 +52,24 @@ public class AuthController {
 
         if (userService.existsByUsername(loginDTO.getUsername())) {
 
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginDTO.getUsername(),
-                            loginDTO.getPassword()
-                    )
-            );
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
             User user = userRepository.findByUsername(loginDTO.getUsername()).get();
 
-            return new ResponseEntity<>("User sign with id = " + user.getId(), HttpStatus.OK);
+            if (passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
+
+                Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                loginDTO.getUsername(),
+                                loginDTO.getPassword()
+                        )
+                );
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                return new ResponseEntity<>("User sign with id = " + user.getId(), HttpStatus.OK);
+            }
+
+            return new ResponseEntity<>("Wrong password!", HttpStatus.BAD_REQUEST);
+
         }
         return new ResponseEntity<>("User with username = \"" + loginDTO.getUsername() + "\" - not found!", HttpStatus.BAD_REQUEST);
     }
