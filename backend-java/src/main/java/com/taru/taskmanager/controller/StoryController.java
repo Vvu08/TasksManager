@@ -19,7 +19,7 @@ public class StoryController {
         this.storyService = storyService;
     }
 
-    @PostMapping("/story/create")
+    @PostMapping("/story")
     public ResponseEntity<StoryDTO> createStory(
             @RequestBody StoryDTO storyDTO,
             @RequestParam(value = "projectId") int projectId
@@ -30,7 +30,7 @@ public class StoryController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PutMapping("/story/{id}/update")
+    @PutMapping("/story/{id}")
     public ResponseEntity<StoryDTO> updateStoryById(
             @RequestBody StoryDTO storyDTO,
             @PathVariable("id") int storyId
@@ -65,7 +65,7 @@ public class StoryController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/story/{id}/delete")
+    @DeleteMapping("/story/{id}")
     public ResponseEntity<String> deleteUserById(@PathVariable("id") int storyId) {
 
         storyService.deleteStoryById(storyId);

@@ -21,7 +21,7 @@ public class UserController {
         this.userRoleService = userRoleService;
     }
 
-    @PostMapping("/user/create")
+    @PostMapping("/user")
     public ResponseEntity<String> createUser(@RequestBody UserDTO userDTO) {
 
         if (userService.existsByUsername(userDTO.getUsername())) {
@@ -51,7 +51,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("/user/{id}/update")
+    @PutMapping("/user/{id}")
     public ResponseEntity<UserDTO> updateUserById(@RequestBody UserDTO userDTO, @PathVariable("id") int userId) {
 
         UserDTO response = userService.updateUserById(userId, userDTO);
@@ -72,7 +72,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/user/{id}/delete")
+    @DeleteMapping("/user/{id}")
     public ResponseEntity<String> deleteUserById(@PathVariable("id") int userId) {
 
         userService.deleteUserById(userId);
