@@ -21,20 +21,6 @@ public class UserController {
         this.userRoleService = userRoleService;
     }
 
-    @PostMapping("/user")
-    public ResponseEntity<String> createUser(@RequestBody UserDTO userDTO) {
-
-        if (userService.existsByUsername(userDTO.getUsername())) {
-            return new ResponseEntity<>("Username is taken!", HttpStatus.BAD_REQUEST);
-        } else if (userService.existsByEmail(userDTO.getEmail())) {
-            return new ResponseEntity<>("Email is taken!", HttpStatus.BAD_REQUEST);
-        }
-
-        userService.createUser(userDTO);
-
-        return new ResponseEntity<>("User registered!", HttpStatus.CREATED);
-    }
-
     @GetMapping("/user/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable("id") int userId) {
 
