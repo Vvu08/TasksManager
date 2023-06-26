@@ -5,6 +5,7 @@ import com.taru.taskmanager.dto.StoryDTO;
 import com.taru.taskmanager.service.StoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class StoryController {
         this.storyService = storyService;
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
     @PostMapping("/story")
     public ResponseEntity<StoryDTO> createStory(
             @RequestBody StoryDTO storyDTO,
@@ -30,6 +32,7 @@ public class StoryController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
     @PutMapping("/story/{id}")
     public ResponseEntity<StoryDTO> updateStoryById(
             @RequestBody StoryDTO storyDTO,
@@ -65,6 +68,7 @@ public class StoryController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     @DeleteMapping("/story/{id}")
     public ResponseEntity<String> deleteUserById(@PathVariable("id") int storyId) {
 

@@ -5,6 +5,7 @@ import com.taru.taskmanager.service.ProjectService;
 import com.taru.taskmanager.service.UserProjectService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class ProjectController {
         this.userProjectService = userProjectService;
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
     @PostMapping("/project")
     public ResponseEntity<ProjectDTO> createProject(@RequestBody ProjectDTO projectDTO) {
 
@@ -29,6 +31,7 @@ public class ProjectController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('MANAGER')")
     @PostMapping("/project/{projectId}/assign/{userId}")
     public ResponseEntity<String> assignUserToProject(
             @PathVariable("projectId") int projectId,
@@ -43,6 +46,7 @@ public class ProjectController {
         );
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
     @PutMapping("/project/{id}")
     public ResponseEntity<ProjectDTO> updateProjectById(
             @RequestBody ProjectDTO projectDTO,
@@ -78,6 +82,7 @@ public class ProjectController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     @DeleteMapping("/project/{id}")
     public ResponseEntity<String> deleteUserById(@PathVariable("id") int projectId) {
 
