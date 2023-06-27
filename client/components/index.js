@@ -2,6 +2,7 @@ export { default as Textarea } from './Textarea'
 export { default as Input } from './Input'
 export { default as DatesPicker } from './DatesPicker'
 export { default as Statistic } from './Statistic'
+export { default as Hero } from './Hero'
 
 export { default as Header } from './layout/Header'
 export { default as NavBar } from './layout/NavBar'

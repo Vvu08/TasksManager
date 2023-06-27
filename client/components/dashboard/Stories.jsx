@@ -34,7 +34,7 @@ const stories = [
   },
 ]
 
-function Stories() {
+function Stories({ stories }) {
   const { query } = useRouter()
   const [visibility, setVisibility] = React.useState(
     Array(stories.length).fill(false)
@@ -90,7 +90,7 @@ function Stories() {
                 {story.startDate}
               </p>
               <p className='px-6 py-4 font-medium whitespace-nowrap text-white overflow-hidden'>
-                {story.dueDate}
+                {story.endDate}
               </p>
             </Link>
             <p

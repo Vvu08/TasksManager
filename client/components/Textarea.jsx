@@ -19,6 +19,7 @@ const Textarea = ({ value, setValue, disabled }) => {
       onChange={(e) => setValue(e.target.value)}
       style={{ resize: 'none', minHeight: '64px' }}
       disabled={disabled}
+      required
       placeholder='Enter text here...'
     />
   )

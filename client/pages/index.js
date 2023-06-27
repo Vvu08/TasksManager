@@ -1,37 +1,13 @@
-import { Inter } from 'next/font/google'
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import Layout from '../layouts'
-import { useSelector } from 'react-redux'
-import { Statistic, StatusColor } from '@/components'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { Statistic, StatusColor, Hero } from '@/components'
+import Layout from '../layouts'
+import { getProjectsByUser } from '@/api/users'
+import { wrapper } from '@/redux/store'
 
-const inter = Inter({ subsets: ['latin'] })
-
-const projects = [
-  {
-    id: 1,
-    title: 'Project 1',
-    status: 'Active',
-  },
-  {
-    id: 2,
-    title: 'Project 2',
-    status: 'Inactive',
-  },
-  {
-    id: 3,
-    title: 'Project 3',
-    status: 'Canceled',
-  },
-  {
-    id: 4,
-    title: 'Project 4',
-    status: 'Draw',
-  },
-]
-
-export default function Home() {
+export default function Home({ projects }) {
   const { role } = useSelector((s) => s.auth)
   const [type, setType] = useState('doughnut')
   const chartData = {
@@ -47,8 +23,10 @@ export default function Home() {
   return (
     <Layout keywords={'main page'}>
       <article className='px-10 py-5'>
-        <h1 className='text-xl'>Your statistic</h1>
-        <Statistic data={chartData} type={type} />
+        <section className='grid lg:grid-cols-2 md:grid-cols-1'>
+          <Hero />
+          <Statistic data={chartData} type={type} />
+        </section>
         <h1 className='text-xl'>Your projects, {role}</h1>
         <section className='grid gap-6 lg:grid-cols-5 md:grid-cols-3 m-3'>
           {projects.map((project) => (
@@ -67,3 +45,13 @@ export default function Home() {
     </Layout>
   )
 }
+
+export const getStaticProps = wrapper.getStaticProps((store) => async () => {
+  await store.dispatch(getProjectsByUser(1))
+  const projects = store.getState().projects.projects
+  return {
+    props: {
+      projects,
+    },
+  }
+})

@@ -21,10 +21,10 @@ const Layout = ({ children, keywords }) => {
         ></link>
       </Head>
       <Header />
-      <article className='project-wrapper'>
+      <main className='project-wrapper'>
         <NavBar />
-        <main>{children}</main>
-      </article>
+        <article>{children}</article>
+      </main>
     </>
   )
 }

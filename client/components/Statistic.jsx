@@ -47,7 +47,15 @@ function Statistic({ data, type }) {
   }, [data, type])
 
   return (
-    <canvas id='chart' width='300' height='100' className='chart mx-5'></canvas>
+    <div>
+      <h1 className='text-xl ml-10'>Your statistic</h1>
+      <canvas
+        id='chart'
+        width='200'
+        height='100'
+        className='chart mx-5'
+      ></canvas>
+    </div>
   )
 }
 
