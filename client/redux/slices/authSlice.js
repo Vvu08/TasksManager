@@ -5,13 +5,8 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState: {
     user: [],
-    role: 'user',
   },
-  reducers: {
-    setRole: () => {
-      state.role = 'admin'
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(HYDRATE, (state, action) => {

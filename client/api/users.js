@@ -52,7 +52,7 @@ export const createUser = async (username, email, password, jobTitle) => {
 
 export const loginUser = createAsyncThunk(
   'users/login',
-  async (username, password) => {
+  async ({ username, password }) => {
     try {
       return await instanceOne.post('auth/login', {
         username,

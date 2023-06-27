@@ -44,6 +44,8 @@ function Registration() {
               placeholder='Username'
               required
               onChange={handleChange}
+              minLength={3}
+              maxLength={15}
             />
           </div>
           <div className='justify-self-end'>
@@ -58,6 +60,8 @@ function Registration() {
               placeholder='Designer'
               required
               onChange={handleChange}
+              minLength={3}
+              maxLength={15}
             />
           </div>
         </div>
@@ -73,6 +77,7 @@ function Registration() {
           placeholder='example@email.com'
           required
           onChange={handleChange}
+          pattern='[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$'
         />
 
         <label className='block text-slate-400' htmlFor='password'>
@@ -86,6 +91,8 @@ function Registration() {
           placeholder='********'
           required
           onChange={handleChange}
+          minLength={5}
+          maxLength={20}
         />
         <span
           className={`${

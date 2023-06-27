@@ -29,12 +29,19 @@ export const getStoriesByProject = async (id) => {
 
 export const createProject = createAsyncThunk(
   'projects/create',
-  async ({ title, status }) => {
+  async ({ title, status }, { getState }) => {
     try {
-      return await instanceOne.post(name, {
-        title,
-        status,
-      })
+      const { username, password } = getState().auth.user
+      return await instanceOne.post(
+        name,
+        {
+          title,
+          status,
+        },
+        {
+          Authorization: 'Basic ' + btoa('testuser2' + ':' + 'testuser2'),
+        }
+      )
     } catch (error) {
       throw error
     }
