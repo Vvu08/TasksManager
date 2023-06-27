@@ -1,6 +1,8 @@
 package com.taru.taskmanager.service.impl;
 
 import com.taru.taskmanager.dto.StoryDTO;
+import com.taru.taskmanager.exception.ProjectNotFoundException;
+import com.taru.taskmanager.exception.StoryNotFoundException;
 import com.taru.taskmanager.mapper.StoryMapper;
 import com.taru.taskmanager.models.Project;
 import com.taru.taskmanager.models.Story;
@@ -27,7 +29,7 @@ public class StoryServiceImpl implements StoryService {
 
         Story story = StoryMapper.mapToEntity(storyDTO);
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new RuntimeException("text")/*new ProjectNotFoundException("Project with id = " + projectId + " - not found!")*/);
+                .orElseThrow(() -> new ProjectNotFoundException("Project with id = " + projectId + " - not found!"));
 
         story.setProject(project);
         story = storyRepository.save(story);
@@ -39,7 +41,7 @@ public class StoryServiceImpl implements StoryService {
     public StoryDTO updateStoryById(int storyId, StoryDTO storyDTO) {
 
         Story story = storyRepository.findById(storyId)
-                .orElseThrow(() -> new RuntimeException("text")/*new StoryNotFoundException("Story with id = " + storyId + " - not found!")*/);
+                .orElseThrow(() -> new StoryNotFoundException("Story with id = " + storyId + " - not found!"));
 
         story.setTitle(storyDTO.getTitle());
         story.setDescription(storyDTO.getDescription());
@@ -55,7 +57,7 @@ public class StoryServiceImpl implements StoryService {
     public StoryDTO getStoryById(int storyId) {
 
         Story story = storyRepository.findById(storyId)
-                .orElseThrow(() -> new RuntimeException("text")/*new StoryNotFoundException("Story with id = " + storyId + " - not found!")*/);
+                .orElseThrow(() ->new StoryNotFoundException("Story with id = " + storyId + " - not found!"));
 
         return StoryMapper.mapToDto(story);
     }

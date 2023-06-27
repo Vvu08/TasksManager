@@ -1,5 +1,7 @@
 package com.taru.taskmanager.service.impl;
 
+import com.taru.taskmanager.exception.RoleNotFoundException;
+import com.taru.taskmanager.exception.UserNotFoundException;
 import com.taru.taskmanager.models.Role;
 import com.taru.taskmanager.models.User;
 import com.taru.taskmanager.models.UserRole;
@@ -32,9 +34,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("not found"));
+                .orElseThrow(() -> new UserNotFoundException("User with username = " + username + " - not found!"));
         UserRole userRole = userRoleRepository.findByUserId(user.getId())
-                .orElseThrow(() -> new RuntimeException("not found"));
+                .orElseThrow(() -> new RoleNotFoundException("User with id = " + user.getId() + " - don't have a role!"));
         List<Role> roles = Collections.singletonList(userRole.getRole());
 
         return new org.springframework.security.core.userdetails.User(

@@ -2,6 +2,9 @@ package com.taru.taskmanager.controller;
 
 import com.taru.taskmanager.dto.LoginDTO;
 import com.taru.taskmanager.dto.UserDTO;
+import com.taru.taskmanager.exception.UserAlreadyExistsException;
+import com.taru.taskmanager.exception.UserNotFoundException;
+import com.taru.taskmanager.exception.WrongPasswordException;
 import com.taru.taskmanager.models.User;
 import com.taru.taskmanager.repository.UserRepository;
 import com.taru.taskmanager.service.UserService;
@@ -34,43 +37,42 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> registerUser(@RequestBody UserDTO userDTO) {
 
         if (userService.existsByUsername(userDTO.getUsername())) {
-            return new ResponseEntity<>("Username is taken!", HttpStatus.BAD_REQUEST);
+            throw new UserAlreadyExistsException("User with username = " + userDTO.getUsername() + " - already exists!");
         } else if (userService.existsByEmail(userDTO.getEmail())) {
-            return new ResponseEntity<>("Email is taken!", HttpStatus.BAD_REQUEST);
+            throw new UserAlreadyExistsException("User with email = " + userDTO.getEmail() + " - already exists!");
         }
 
         userDTO = userService.createUser(userDTO);
 
-        return new ResponseEntity<>("User registered with id = " + userDTO.getId(), HttpStatus.CREATED);
+        return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<UserDTO> loginUser(@RequestBody LoginDTO loginDTO) {
 
-        if (userService.existsByUsername(loginDTO.getUsername())) {
-
-            User user = userRepository.findByUsername(loginDTO.getUsername()).get();
-
-            if (passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
-
-                Authentication authentication = authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(
-                                loginDTO.getUsername(),
-                                loginDTO.getPassword()
-                        )
-                );
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-
-                return new ResponseEntity<>("User sign with id = " + user.getId(), HttpStatus.OK);
-            }
-
-            return new ResponseEntity<>("Wrong password!", HttpStatus.BAD_REQUEST);
-
+        if (!userService.existsByUsername(loginDTO.getUsername())) {
+            throw new UserNotFoundException("User with username = " + loginDTO.getUsername() + " - not found!");
         }
-        return new ResponseEntity<>("User with username = \"" + loginDTO.getUsername() + "\" - not found!", HttpStatus.BAD_REQUEST);
+
+        User user = userRepository.findByUsername(loginDTO.getUsername())
+                .orElseThrow(() -> new UserNotFoundException("User with username = " + loginDTO.getUsername() + " - not found!"));
+
+        if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
+            throw new WrongPasswordException("Wrong password!");
+        }
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginDTO.getUsername(),
+                        loginDTO.getPassword()
+                )
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return new ResponseEntity<>(userService.getUserById(user.getId()), HttpStatus.OK);
     }
 }

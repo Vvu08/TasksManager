@@ -1,5 +1,7 @@
 package com.taru.taskmanager.service.impl;
 
+import com.taru.taskmanager.exception.RoleNotFoundException;
+import com.taru.taskmanager.exception.UserNotFoundException;
 import com.taru.taskmanager.models.Role;
 import com.taru.taskmanager.models.User;
 import com.taru.taskmanager.models.UserRole;
@@ -27,13 +29,13 @@ public class UserRoleServiceImpl implements UserRoleService {
     public void createUserRole(int userId, int roleId) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("text")/*new UserNotFoundException("User with id = " + userId + " - not found!")*/);
+                .orElseThrow(() -> new UserNotFoundException("User with id = " + userId + " - not found!"));
 
         Role role = roleRepository.findById(roleId)
-                .orElseThrow(() -> new RuntimeException("text")/*new RoleNotFoundException("Role with id = " + roleId + " - not found!")*/);
+                .orElseThrow(() -> new RoleNotFoundException("Role with id = " + roleId + " - not found!"));
 
         if (userRoleRepository.existsByUserId(userId)) {
-            throw new RuntimeException("text")/*new UserHaveRoleException("User with id = " + userId + " already have Role!")*/;
+            throw new RuntimeException("User with id = " + userId + " already have Role!");
         }
 
         userRoleRepository.save(
@@ -50,13 +52,13 @@ public class UserRoleServiceImpl implements UserRoleService {
     public void updateUserRoleByUserId(int userId, int roleId) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("text")/*new UserNotFoundException("User with id = " + userId + " - not found!")*/);
+                .orElseThrow(() -> new UserNotFoundException("User with id = " + userId + " - not found!"));
 
         Role role = roleRepository.findById(roleId)
-                .orElseThrow(() -> new RuntimeException("text")/*new RoleNotFoundException("Role with id = " + roleId + " - not found!")*/);
+                .orElseThrow(() -> new RoleNotFoundException("Role with id = " + roleId + " - not found!"));
 
         UserRole temp = userRoleRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("text"));
+                .orElseThrow(() -> new RoleNotFoundException("User with id = " + userId + " - don't have a role!"));
         userRoleRepository.deleteById(new UserRoleId(userId, temp.getRole().getId()));
 
         userRoleRepository.save(

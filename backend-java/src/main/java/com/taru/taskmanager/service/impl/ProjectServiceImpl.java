@@ -1,6 +1,7 @@
 package com.taru.taskmanager.service.impl;
 
 import com.taru.taskmanager.dto.ProjectDTO;
+import com.taru.taskmanager.exception.ProjectNotFoundException;
 import com.taru.taskmanager.mapper.ProjectMapper;
 import com.taru.taskmanager.models.Project;
 import com.taru.taskmanager.models.UserProjects;
@@ -36,7 +37,7 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectDTO updateProjectById(int projectId, ProjectDTO projectDTO) {
 
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new RuntimeException("text")/*new ProjectNotFoundException("Project with id = " + projectId + " - not found!")*/);
+                .orElseThrow(() -> new ProjectNotFoundException("Project with id = " + projectId + " - not found!"));
 
         project.setTitle(projectDTO.getTitle());
         project.setStatus(projectDTO.getStatus());
@@ -50,7 +51,7 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectDTO getProjectById(int projectId) {
 
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new RuntimeException("text")/*new ProjectNotFoundException("Project with id = " + projectId + " - not found!")*/);
+                .orElseThrow(() -> new ProjectNotFoundException("Project with id = " + projectId + " - not found!"));
 
         return ProjectMapper.mapToDto(project);
     }

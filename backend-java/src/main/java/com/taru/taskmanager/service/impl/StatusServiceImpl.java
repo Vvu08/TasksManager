@@ -1,6 +1,8 @@
 package com.taru.taskmanager.service.impl;
 
 import com.taru.taskmanager.dto.StatusDTO;
+import com.taru.taskmanager.exception.StatusNotFoundException;
+import com.taru.taskmanager.exception.TaskNotFoundException;
 import com.taru.taskmanager.mapper.StatusMapper;
 import com.taru.taskmanager.models.Status;
 import com.taru.taskmanager.models.StatusTasks;
@@ -26,7 +28,7 @@ public class StatusServiceImpl implements StatusService {
     public StatusDTO getStatusById(int statusId) {
 
         Status status = statusRepository.findById(statusId)
-                .orElseThrow(() -> new RuntimeException("text")/*new StatusNotFoundException("Status with id = " + statusId + " - not found!")*/);
+                .orElseThrow(() -> new StatusNotFoundException("Status with id = " + statusId + " - not found!"));
 
         return StatusMapper.mapToDto(status);
     }
@@ -35,7 +37,7 @@ public class StatusServiceImpl implements StatusService {
     public StatusDTO getStatusByTaskId(int taskId) {
 
         StatusTasks statusTasks = statusTasksRepository.findByTaskId(taskId)
-                .orElseThrow(() -> new RuntimeException("text"));
+                .orElseThrow(() -> new TaskNotFoundException("Task with id = " + taskId + " - not found!"));
 
         return StatusMapper.mapToDto(statusTasks.getStatus());
     }

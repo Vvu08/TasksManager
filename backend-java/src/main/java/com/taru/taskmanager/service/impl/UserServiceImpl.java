@@ -1,6 +1,7 @@
 package com.taru.taskmanager.service.impl;
 
 import com.taru.taskmanager.dto.UserDTO;
+import com.taru.taskmanager.exception.UserNotFoundException;
 import com.taru.taskmanager.mapper.UserMapper;
 import com.taru.taskmanager.models.Task;
 import com.taru.taskmanager.models.User;
@@ -66,7 +67,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO updateUserById(int userId, UserDTO userDTO) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("text")/*new UserNotFoundException("User with id = " + userId + " - not found!")*/);
+                .orElseThrow(() -> new UserNotFoundException("User with id = " + userId + " - not found!"));
 
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
@@ -85,7 +86,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO getUserById(int userId) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("text")/*new UserNotFoundException("User with id = " + userId + " - not found!")*/);
+                .orElseThrow(() -> new UserNotFoundException("User with id = " + userId + " - not found!"));
 
         UserDTO result = UserMapper.mapToDto(user);
         result.setRole(roleService.getRoleByUserId(user.getId()));

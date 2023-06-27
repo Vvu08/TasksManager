@@ -1,6 +1,10 @@
 package com.taru.taskmanager.service.impl;
 
 import com.taru.taskmanager.dto.TaskDTO;
+import com.taru.taskmanager.exception.StatusNotFoundException;
+import com.taru.taskmanager.exception.StoryNotFoundException;
+import com.taru.taskmanager.exception.TaskNotFoundException;
+import com.taru.taskmanager.exception.UserNotFoundException;
 import com.taru.taskmanager.mapper.StatusMapper;
 import com.taru.taskmanager.mapper.TaskMapper;
 import com.taru.taskmanager.models.*;
@@ -32,13 +36,13 @@ public class TaskServiceImpl implements TaskService {
 
         Task task = TaskMapper.mapToEntity(taskDTO);
         Story story = storyRepository.findById(storyId)
-                .orElseThrow(() -> new RuntimeException("text")/*new StoryNotFoundException("Story with id = " + storyId + " - not found!")*/);
+                .orElseThrow(() -> new StoryNotFoundException("Story with id = " + storyId + " - not found!"));
 
         task.setStory(story);
         task = taskRepository.save(task);
 
         Status status = statusRepository.findById(1)
-                .orElseThrow(() -> new RuntimeException("text")/*new StatusNotFoundException("Status with id = " + statusId + " - not found!")*/);
+                .orElseThrow(() -> new StatusNotFoundException("Status with id = 1 - not found!"));
         statusTasksRepository.save(
                 new StatusTasks(
                         new StatusTasksId(task.getId(), status.getId()),
@@ -56,7 +60,7 @@ public class TaskServiceImpl implements TaskService {
     public TaskDTO updateTaskById(int taskId, TaskDTO taskDTO) {
 
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("text")/*new TaskNotFoundException("Task with id = " + taskId + " - not found!")*/);
+                .orElseThrow(() -> new TaskNotFoundException("Task with id = " + taskId + " - not found!"));
 
         task.setTitle(taskDTO.getTitle());
         task.setDescription(taskDTO.getDescription());
@@ -74,10 +78,10 @@ public class TaskServiceImpl implements TaskService {
     public void setUserToTaskByTaskId(int taskId, int userId) {
 
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("text")/*new TaskNotFoundException("Task with id = " + taskId + " - not found!")*/);
+                .orElseThrow(() -> new TaskNotFoundException("Task with id = " + taskId + " - not found!"));
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("text")/*new UserNotFoundException("User with id = " + userId + " - not found!")*/);
+                .orElseThrow(() -> new UserNotFoundException("User with id = " + userId + " - not found!"));
 
         task.setUser(user);
         taskRepository.save(task);
@@ -87,7 +91,7 @@ public class TaskServiceImpl implements TaskService {
     public TaskDTO getTaskById(int taskId) {
 
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("text")/*new TaskNotFoundException("Task with id = " + taskId + " - not found!")*/);
+                .orElseThrow(() -> new TaskNotFoundException("Task with id = " + taskId + " - not found!"));
 
         TaskDTO result = TaskMapper.mapToDto(task);
         result.setStatus(StatusMapper.mapToDto(statusTasksRepository.findByTaskId(task.getId()).get().getStatus()));

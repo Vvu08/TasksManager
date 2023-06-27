@@ -1,6 +1,7 @@
 package com.taru.taskmanager.service.impl;
 
 import com.taru.taskmanager.dto.RoleDTO;
+import com.taru.taskmanager.exception.RoleNotFoundException;
 import com.taru.taskmanager.mapper.RoleMapper;
 import com.taru.taskmanager.models.Role;
 import com.taru.taskmanager.models.UserRole;
@@ -27,7 +28,7 @@ public class RoleServiceImpl implements RoleService {
     public RoleDTO getRoleById(int roleId) {
 
         Role role = roleRepository.findById(roleId)
-                .orElseThrow(() -> new RuntimeException("text")/*new RoleNotFoundException("Role with id = " + roleId + " - not found!")*/);
+                .orElseThrow(() -> new RoleNotFoundException("Role with id = " + roleId + " - not found!"));
 
         return RoleMapper.mapToDto(role);
     }
@@ -36,7 +37,7 @@ public class RoleServiceImpl implements RoleService {
     public RoleDTO getRoleByUserId(int userId) {
 
         UserRole userRole = userRoleRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("text")/*new RoleNotFoundException("Role with id = " + roleId + " - not found!")*/);
+                .orElseThrow(() -> new RoleNotFoundException("User with id = " + userId + " - don't have a role!"));
 
         return RoleMapper.mapToDto(userRole.getRole());
     }

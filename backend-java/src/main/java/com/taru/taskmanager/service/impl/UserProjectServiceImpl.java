@@ -1,5 +1,7 @@
 package com.taru.taskmanager.service.impl;
 
+import com.taru.taskmanager.exception.ProjectNotFoundException;
+import com.taru.taskmanager.exception.UserNotFoundException;
 import com.taru.taskmanager.models.*;
 import com.taru.taskmanager.repository.*;
 import com.taru.taskmanager.service.ProjectService;
@@ -24,14 +26,14 @@ public class UserProjectServiceImpl implements UserProjectService {
     public void createUserProject(int userId, int projectId) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("text")/*new UserNotFoundException("User with id = " + userId + " - not found!")*/);
+                .orElseThrow(() -> new UserNotFoundException("User with id = " + userId + " - not found!"));
 
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new RuntimeException("text")/*new ProjectNotFoundException("Project with id = " + projectId + " - not found!")*/);
+                .orElseThrow(() -> new ProjectNotFoundException("Project with id = " + projectId + " - not found!"));
 
         int count = userProjectsRepository.countByUserId(userId);
         if ((count == 1 && !user.getJobTitle().equals("Designer")) || (count >= 2)) {
-            throw new RuntimeException("text")/*new UserHaveProjectException("User with id = " + userId + " already have Project!")*/;
+            throw new RuntimeException("User with id = " + userId + " already have Project!");
         }
 
         userProjectsRepository.save(
@@ -48,14 +50,14 @@ public class UserProjectServiceImpl implements UserProjectService {
     public void updateUserProjectByUserId(int userId, int projectId, int newProjectId) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("text")/*new UserNotFoundException("User with id = " + userId + " - not found!")*/);
+                .orElseThrow(() -> new UserNotFoundException("User with id = " + userId + " - not found!"));
 
         Project newProject = projectRepository.findById(newProjectId)
-                .orElseThrow(() -> new RuntimeException("text")/*new ProjectNotFoundException("Project with id = " + projectId + " - not found!")*/);
+                .orElseThrow(() -> new ProjectNotFoundException("Project with id = " + projectId + " - not found!"));
 
         UserProjectsId userProjectsId = new UserProjectsId(userId, projectId);
         UserProjects temp = userProjectsRepository.findById(userProjectsId)
-                .orElseThrow(() -> new RuntimeException("text"));
+                .orElseThrow(() -> new UserNotFoundException("Project don`t have user with id = " + userId + "!"));
         userProjectsRepository.deleteById(temp.getId());
 
         userProjectsRepository.save(
