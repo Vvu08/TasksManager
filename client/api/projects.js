@@ -31,7 +31,7 @@ export const createProject = createAsyncThunk(
   'projects/create',
   async ({ title, status }) => {
     try {
-      return await instanceOne.post(name + '/create', {
+      return await instanceOne.post(name, {
         title,
         status,
       })

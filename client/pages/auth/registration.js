@@ -21,7 +21,9 @@ function Registration() {
   const submitForm = () => {
     const { username, email, password, jobTitle } = data
     createUser(username, email, password, jobTitle).then((res) => {
-      res.status === 201 ? router.push('login') : setError(res.response.data)
+      res.status === 201
+        ? router.push('login')
+        : setError('Something went wrong')
     })
   }
 

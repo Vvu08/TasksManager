@@ -39,7 +39,7 @@ export const getTasksByUser = async (id) => {
 
 export const createUser = async (username, email, password, jobTitle) => {
   try {
-    return await instanceOne.post(name + '/create', {
+    return await instanceOne.post('auth/register', {
       username,
       email,
       password,
@@ -49,6 +49,20 @@ export const createUser = async (username, email, password, jobTitle) => {
     return error
   }
 }
+
+export const loginUser = createAsyncThunk(
+  'users/login',
+  async (username, password) => {
+    try {
+      return await instanceOne.post('auth/login', {
+        username,
+        password,
+      })
+    } catch (error) {
+      return error
+    }
+  }
+)
 
 export const updateRole = async (userId, roleId) => {
   try {

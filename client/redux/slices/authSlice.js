@@ -1,15 +1,28 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { HYDRATE } from 'next-redux-wrapper'
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    username: 'Username',
+    user: [],
     role: 'user',
   },
   reducers: {
     setRole: () => {
       state.role = 'admin'
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(HYDRATE, (state, action) => {
+        return {
+          ...state,
+          ...action.payload.projects,
+        }
+      })
+      .addCase('users/login/fulfilled', (state, action) => {
+        state.user = action.payload.data
+      })
   },
 })
 
