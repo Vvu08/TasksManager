@@ -11,18 +11,6 @@ import java.util.Date;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorObject> handleRuntimeException(RuntimeException ex, WebRequest request) {
-
-        ErrorObject errorObject = new ErrorObject();
-
-        errorObject.setStatusCode(HttpStatus.I_AM_A_TEAPOT.value());
-        errorObject.setMessage(ex.getMessage());
-        errorObject.setTimestamp(new Date());
-
-        return new ResponseEntity<>(errorObject, HttpStatus.I_AM_A_TEAPOT);
-    }
-
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorObject> handleUserNotFoundException(UserNotFoundException ex, WebRequest request) {
 
