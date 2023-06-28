@@ -1,5 +1,7 @@
 package com.taru.taskmanager.controller;
 
+import com.taru.taskmanager.config.JWTGenerator;
+import com.taru.taskmanager.dto.AuthResponseDTO;
 import com.taru.taskmanager.dto.LoginDTO;
 import com.taru.taskmanager.dto.UserDTO;
 import com.taru.taskmanager.exception.UserAlreadyExistsException;
@@ -28,12 +30,14 @@ public class AuthController {
     private final UserService userService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JWTGenerator jwtGenerator;
 
-    public AuthController(AuthenticationManager authenticationManager, UserService userService, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthController(AuthenticationManager authenticationManager, UserService userService, UserRepository userRepository, PasswordEncoder passwordEncoder, JWTGenerator jwtGenerator) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtGenerator = jwtGenerator;
     }
 
     @PostMapping("/register")
@@ -51,7 +55,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserDTO> loginUser(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<AuthResponseDTO> loginUser(@RequestBody LoginDTO loginDTO) {
 
         if (!userService.existsByUsername(loginDTO.getUsername())) {
             throw new UserNotFoundException("User with username = " + loginDTO.getUsername() + " - not found!");
@@ -73,6 +77,8 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return new ResponseEntity<>(userService.getUserById(user.getId()), HttpStatus.OK);
+        String token = jwtGenerator.generateToken(authentication);
+
+        return new ResponseEntity<>(new AuthResponseDTO(token), HttpStatus.OK);
     }
 }
