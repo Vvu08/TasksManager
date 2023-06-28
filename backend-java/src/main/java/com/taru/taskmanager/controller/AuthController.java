@@ -7,6 +7,7 @@ import com.taru.taskmanager.dto.UserDTO;
 import com.taru.taskmanager.exception.UserAlreadyExistsException;
 import com.taru.taskmanager.exception.UserNotFoundException;
 import com.taru.taskmanager.exception.WrongPasswordException;
+import com.taru.taskmanager.mapper.UserMapper;
 import com.taru.taskmanager.models.User;
 import com.taru.taskmanager.repository.UserRepository;
 import com.taru.taskmanager.service.UserService;
@@ -79,6 +80,6 @@ public class AuthController {
 
         String token = jwtGenerator.generateToken(authentication);
 
-        return new ResponseEntity<>(new AuthResponseDTO(token), HttpStatus.OK);
+        return new ResponseEntity<>(new AuthResponseDTO(token, userService.getUserById(user.getId())), HttpStatus.OK);
     }
 }
