@@ -32,7 +32,10 @@ public class Task {
     private Story story;
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StatusTasks> statusTasks = new ArrayList<>();
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+    @OneToOne
+    @JoinColumn(name = "task_creator")
+    private User taskCreator;
 }

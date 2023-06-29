@@ -9,6 +9,8 @@ import com.taru.taskmanager.mapper.StatusMapper;
 import com.taru.taskmanager.mapper.TaskMapper;
 import com.taru.taskmanager.models.*;
 import com.taru.taskmanager.repository.*;
+import com.taru.taskmanager.security.JWTGenerator;
+import com.taru.taskmanager.security.SecurityConstants;
 import com.taru.taskmanager.service.TaskService;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +24,15 @@ public class TaskServiceImpl implements TaskService {
     private final UserRepository userRepository;
     private final StatusRepository statusRepository;
     private final StatusTasksRepository statusTasksRepository;
+    private final JWTGenerator jwtGenerator;
 
-    public TaskServiceImpl(TaskRepository taskRepository, StoryRepository storyRepository, UserRepository userRepository, StatusRepository statusRepository, StatusTasksRepository statusTasksRepository) {
+    public TaskServiceImpl(TaskRepository taskRepository, StoryRepository storyRepository, UserRepository userRepository, StatusRepository statusRepository, StatusTasksRepository statusTasksRepository, JWTGenerator jwtGenerator) {
         this.taskRepository = taskRepository;
         this.storyRepository = storyRepository;
         this.userRepository = userRepository;
         this.statusRepository = statusRepository;
         this.statusTasksRepository = statusTasksRepository;
+        this.jwtGenerator = jwtGenerator;
     }
 
     @Override
@@ -37,12 +41,16 @@ public class TaskServiceImpl implements TaskService {
         Task task = TaskMapper.mapToEntity(taskDTO);
         Story story = storyRepository.findById(storyId)
                 .orElseThrow(() -> new StoryNotFoundException("Story with id = " + storyId + " - not found!"));
+        String usernameFromJWT = jwtGenerator.getUsernameFromJWT(SecurityConstants.CURRENT_TOKEN);
+        User taskCreator = userRepository.findByUsername(usernameFromJWT)
+                .orElseThrow(() -> new UserNotFoundException("User with username = " + usernameFromJWT + " - not found!"));
 
+        task.setTaskCreator(taskCreator);
         task.setStory(story);
         task = taskRepository.save(task);
 
-        Status status = statusRepository.findById(1)
-                .orElseThrow(() -> new StatusNotFoundException("Status with id = 1 - not found!"));
+        Status status = statusRepository.findByName("TO DO")
+                .orElseThrow(() -> new StatusNotFoundException("Status with name = \"TO DO\" - not found!"));
         statusTasksRepository.save(
                 new StatusTasks(
                         new StatusTasksId(task.getId(), status.getId()),

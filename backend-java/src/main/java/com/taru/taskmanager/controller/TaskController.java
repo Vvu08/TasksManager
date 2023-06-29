@@ -1,6 +1,5 @@
 package com.taru.taskmanager.controller;
 
-import com.taru.taskmanager.dto.StoryDTO;
 import com.taru.taskmanager.dto.TaskDTO;
 import com.taru.taskmanager.service.StatusTasksService;
 import com.taru.taskmanager.service.TaskService;
