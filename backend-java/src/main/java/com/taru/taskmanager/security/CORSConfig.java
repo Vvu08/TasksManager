@@ -1,4 +1,4 @@
-package com.taru.taskmanager.config;
+package com.taru.taskmanager.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

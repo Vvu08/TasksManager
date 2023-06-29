@@ -1,4 +1,4 @@
-package com.taru.taskmanager.config;
+package com.taru.taskmanager.security;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

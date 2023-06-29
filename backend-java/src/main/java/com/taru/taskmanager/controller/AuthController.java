@@ -1,15 +1,15 @@
 package com.taru.taskmanager.controller;
 
-import com.taru.taskmanager.config.JWTGenerator;
+import com.taru.taskmanager.security.JWTGenerator;
 import com.taru.taskmanager.dto.AuthResponseDTO;
 import com.taru.taskmanager.dto.LoginDTO;
 import com.taru.taskmanager.dto.UserDTO;
 import com.taru.taskmanager.exception.UserAlreadyExistsException;
 import com.taru.taskmanager.exception.UserNotFoundException;
 import com.taru.taskmanager.exception.WrongPasswordException;
-import com.taru.taskmanager.mapper.UserMapper;
 import com.taru.taskmanager.models.User;
 import com.taru.taskmanager.repository.UserRepository;
+import com.taru.taskmanager.security.SecurityConstants;
 import com.taru.taskmanager.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,6 +79,7 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = jwtGenerator.generateToken(authentication);
+        SecurityConstants.CURRENT_TOKEN = token;
 
         return new ResponseEntity<>(new AuthResponseDTO(token, userService.getUserById(user.getId())), HttpStatus.OK);
     }

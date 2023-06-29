@@ -1,4 +1,4 @@
-package com.taru.taskmanager.config;
+package com.taru.taskmanager.security;
 
 import com.taru.taskmanager.service.impl.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;

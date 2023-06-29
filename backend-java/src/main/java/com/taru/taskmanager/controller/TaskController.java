@@ -109,7 +109,7 @@ public class TaskController {
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     @DeleteMapping("/task/{id}")
-    public ResponseEntity<String> deleteUserById(@PathVariable("id") int taskId) {
+    public ResponseEntity<String> deleteTaskById(@PathVariable("id") int taskId) {
 
         taskService.deleteTaskById(taskId);
 

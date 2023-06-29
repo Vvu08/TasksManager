@@ -1,6 +1,6 @@
 package com.taru.taskmanager;
 
-import com.taru.taskmanager.config.CORSConfig;
+import com.taru.taskmanager.security.CORSConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;

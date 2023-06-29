@@ -1,6 +1,5 @@
 package com.taru.taskmanager.controller;
 
-import com.taru.taskmanager.dto.ProjectDTO;
 import com.taru.taskmanager.dto.StoryDTO;
 import com.taru.taskmanager.service.StoryService;
 import org.springframework.http.HttpStatus;
@@ -70,7 +69,7 @@ public class StoryController {
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     @DeleteMapping("/story/{id}")
-    public ResponseEntity<String> deleteUserById(@PathVariable("id") int storyId) {
+    public ResponseEntity<String> deleteStoryById(@PathVariable("id") int storyId) {
 
         storyService.deleteStoryById(storyId);
 

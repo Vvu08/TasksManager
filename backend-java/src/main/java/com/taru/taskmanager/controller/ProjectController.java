@@ -84,7 +84,7 @@ public class ProjectController {
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     @DeleteMapping("/project/{id}")
-    public ResponseEntity<String> deleteUserById(@PathVariable("id") int projectId) {
+    public ResponseEntity<String> deleteProjectById(@PathVariable("id") int projectId) {
 
         projectService.deleteProjectById(projectId);
 

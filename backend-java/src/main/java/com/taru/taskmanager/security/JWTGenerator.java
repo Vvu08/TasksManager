@@ -1,8 +1,6 @@
-package com.taru.taskmanager.config;
+package com.taru.taskmanager.security;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
-import java.security.Key;
 import java.util.Date;
 
 import io.jsonwebtoken.Claims;
@@ -14,9 +12,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JWTGenerator {
-    //private static final KeyPair keyPair = Keys.keyPairFor(SignatureAlgorithm.RS256);
-    private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-    //private static final String secret = "secret";
 
     public String generateToken(Authentication authentication) {
         String username = authentication.getName();
@@ -27,7 +22,7 @@ public class JWTGenerator {
                 .setSubject(username)
                 .setIssuedAt( new Date())
                 .setExpiration(expireDate)
-                .signWith(key, SignatureAlgorithm.HS512)
+                .signWith(SecurityConstants.KEY, SignatureAlgorithm.HS512)
                 .compact();
         System.out.println("New token :");
         System.out.println(token);
@@ -35,7 +30,7 @@ public class JWTGenerator {
     }
     public String getUsernameFromJWT(String token){
         Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key)
+                .setSigningKey(SecurityConstants.KEY)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
@@ -45,7 +40,7 @@ public class JWTGenerator {
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
-                    .setSigningKey(key)
+                    .setSigningKey(SecurityConstants.KEY)
                     .build()
                     .parseClaimsJws(token);
             return true;
