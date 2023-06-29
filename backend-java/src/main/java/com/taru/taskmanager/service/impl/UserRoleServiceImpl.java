@@ -1,7 +1,9 @@
 package com.taru.taskmanager.service.impl;
 
+import com.taru.taskmanager.exception.AccessDeniedException;
 import com.taru.taskmanager.exception.RoleNotFoundException;
 import com.taru.taskmanager.exception.UserNotFoundException;
+import com.taru.taskmanager.exception.UserRoleException;
 import com.taru.taskmanager.models.Role;
 import com.taru.taskmanager.models.User;
 import com.taru.taskmanager.models.UserRole;
@@ -26,23 +28,25 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     @Override
-    public void createUserRole(int userId, int roleId) {
+    public void createUserRole(int userId) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User with id = " + userId + " - not found!"));
 
-        Role role = roleRepository.findById(roleId)
-                .orElseThrow(() -> new RoleNotFoundException("Role with id = " + roleId + " - not found!"));
+        Role role = roleRepository.findByType("ROLE_USER")
+                .orElseThrow(() -> new RoleNotFoundException("Role = \"ROLE_USER\" - not found!"));
 
-        if (userRoleRepository.existsByUserId(userId)) {
-            throw new RuntimeException("User with id = " + userId + " already have Role!");
+        if (role.getType().equals("ROLE_ADMIN")){
+            throw new AccessDeniedException("You can't create user_role with role ADMIN!");
+        } else if (userRoleRepository.existsByUserId(userId)) {
+            throw new UserRoleException("User with id = " + userId + " already have Role!");
         }
 
         userRoleRepository.save(
                 new UserRole(
                     new UserRoleId(
                         userId,
-                        roleId),
+                        role.getId()),
                     user,
                     role)
         );
@@ -59,6 +63,13 @@ public class UserRoleServiceImpl implements UserRoleService {
 
         UserRole temp = userRoleRepository.findByUserId(userId)
                 .orElseThrow(() -> new RoleNotFoundException("User with id = " + userId + " - don't have a role!"));
+
+        if (temp.getRole().getType().equals("ROLE_ADMIN")){
+            throw new AccessDeniedException("You can't change role of user with role ADMIN!");
+        } else if (role.getType().equals("ROLE_ADMIN")){
+            throw new AccessDeniedException("You can't change role of user to role ADMIN!");
+        }
+
         userRoleRepository.deleteById(new UserRoleId(userId, temp.getRole().getId()));
 
         userRoleRepository.save(
@@ -74,7 +85,10 @@ public class UserRoleServiceImpl implements UserRoleService {
     public void deleteUserRoleByUserId(int userId) {
 
         UserRole userRole = userRoleRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("text"));
+                .orElseThrow(() -> new UserRoleException("User with id = " + userId + " - don't have a role!"));
+        if (userRole.getRole().getType().equals("ROLE_ADMIN")){
+            throw new AccessDeniedException("You can't delete role of user with role ADMIN!");
+        }
         userRoleRepository.deleteById(new UserRoleId(userId, userRole.getRole().getId()));
     }
 }

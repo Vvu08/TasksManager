@@ -34,7 +34,7 @@ public class StatusTasksServiceImpl implements StatusTasksService {
                 .orElseThrow(() -> new StatusNotFoundException("Status with id = " + statusId + " - not found!"));
 
         StatusTasks statusTasks = statusTasksRepository.findByTaskId(taskId)
-                .orElseThrow(() -> new RuntimeException("text"));
+                .orElseThrow(() -> new RuntimeException("Task with id = " + taskId + " - don't have status!"));
         statusTasksRepository.deleteById(statusTasks.getId());
 
         statusTasksRepository.save(new StatusTasks(

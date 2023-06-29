@@ -1,14 +1,17 @@
 package com.taru.taskmanager.service.impl;
 
 import com.taru.taskmanager.dto.UserDTO;
+import com.taru.taskmanager.exception.AccessDeniedException;
 import com.taru.taskmanager.exception.UserNotFoundException;
 import com.taru.taskmanager.mapper.UserMapper;
 import com.taru.taskmanager.models.Task;
 import com.taru.taskmanager.models.User;
 import com.taru.taskmanager.models.UserProjects;
+import com.taru.taskmanager.models.UserRole;
 import com.taru.taskmanager.repository.TaskRepository;
 import com.taru.taskmanager.repository.UserProjectsRepository;
 import com.taru.taskmanager.repository.UserRepository;
+import com.taru.taskmanager.repository.UserRoleRepository;
 import com.taru.taskmanager.service.RoleService;
 import com.taru.taskmanager.service.UserRoleService;
 import com.taru.taskmanager.service.UserService;
@@ -25,14 +28,16 @@ public class UserServiceImpl implements UserService {
     private final RoleService roleService;
     private final TaskRepository taskRepository;
     private final UserProjectsRepository userProjectsRepository;
+    private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, UserRoleService userRoleService, RoleService roleService, TaskRepository taskRepository, UserProjectsRepository userProjectsRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, UserRoleService userRoleService, RoleService roleService, TaskRepository taskRepository, UserProjectsRepository userProjectsRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userRoleService = userRoleService;
         this.roleService = roleService;
         this.taskRepository = taskRepository;
         this.userProjectsRepository = userProjectsRepository;
+        this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -55,7 +60,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user = userRepository.save(user);
 
-        userRoleService.createUserRole(user.getId(), 1);
+        userRoleService.createUserRole(user.getId());
 
         UserDTO result = UserMapper.mapToDto(user);
         result.setRole(roleService.getRoleByUserId(user.getId()));
@@ -109,6 +114,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUserById(int userId) {
+
+        UserRole userRole = userRoleRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("User with id = " + userId + " - does not have a role!"));
+
+        if (userRole.getRole().getType().equals("ROLE_ADMIN")){
+            throw new AccessDeniedException("You can't delete user with role ADMIN!");
+        }
 
         List<Task> tasks = taskRepository.findByUserId(userId);
         tasks.forEach(t -> {
