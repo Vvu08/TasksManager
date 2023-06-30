@@ -1,27 +1,46 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import ProjectLayout from '@/layouts/ProjectLayout'
 import { Textarea, Input, SelectPriority, SelectStatus } from '@/components'
-
-const task = {
-  title: 'Create a new project',
-  description: 'Create a new project with the following features: ...',
-  assignee: 'John Doe',
-  status: 'In Progress',
-  priority: 5,
-}
+import { getTask, updateTask } from '@/api/tasks'
 
 function Task() {
   const { query } = useRouter()
-  const [title, setTitle] = useState(task.title)
-  const [description, setDescription] = useState(task.description)
-  const [priority, setPriority] = useState(task.priority)
-  const [status, setStatus] = useState(task.status)
-  const [assignee, setAssignee] = useState(task.assignee)
+  const [id, setId] = useState(undefined)
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [priority, setPriority] = useState(undefined)
+  const [status, setStatus] = useState(undefined)
+  const [assignee, setAssignee] = useState(undefined)
   const [disabled, setDisabled] = useState(true)
+  const dispatch = useDispatch()
 
-  const handleEdit = () => setDisabled(!disabled)
+  const handleEdit = () => {
+    setDisabled(!disabled)
+    !disabled &&
+      dispatch(
+        updateTask({
+          id,
+          title,
+          description,
+          priority,
+        })
+      )
+  }
+
+  useEffect(() => {
+    dispatch(getTask(query.taskId)).then((res) => {
+      if (res.payload) {
+        setId(res.payload.data.id)
+        setTitle(res.payload.data.title)
+        setDescription(res.payload.data.description)
+        setPriority(res.payload.data.priority)
+        setStatus(res.payload.data.status)
+      }
+    })
+  }, [])
 
   return (
     <ProjectLayout>

@@ -1,13 +1,11 @@
-import { useRouter } from 'next/router'
 import ProjectLayout from '@/layouts/ProjectLayout'
 import { ProjectStatistics, Stories } from '@/components'
-import { getStoriesByProject } from '@/api/projects'
 
 const project = {
   title: 'Fullstack Website',
 }
 
-function Project({ stories }) {
+function Project() {
   return (
     <ProjectLayout>
       <section className='m-3 px-10'>
@@ -19,7 +17,7 @@ function Project({ stories }) {
           <p className='text-slate-400 text-sm'>3 assignees</p>
         </div>
         <ProjectStatistics />
-        <Stories stories={stories} />
+        <Stories />
       </section>
     </ProjectLayout>
   )
@@ -27,10 +25,21 @@ function Project({ stories }) {
 
 export default Project
 
-export async function getServerSideProps(context) {
+/* export async function getServerSideProps(context) {
   const { id } = context.query
-  const stories = (await getStoriesByProject(id)).data
-  return {
-    props: { stories },
+  console.log('PROJECT ID', id)
+  try {
+    const res = await getStoriesByProject(id)
+    const stories = res.data
+    console.log('RESPONSE', res)
+    console.log('STORIES', stories)
+    return {
+      props: { stories },
+    }
+  } catch (error) {
+    console.error('Error fetching stories:', error)
+    return {
+      props: { stories: null }, // or handle the error in a different way
+    }
   }
-}
+} */

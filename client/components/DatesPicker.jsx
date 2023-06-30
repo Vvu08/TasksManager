@@ -8,15 +8,16 @@ function DatesPicker({ value, setValue, disabled }) {
   const handleChange = (selectedDate) => setValue(selectedDate)
 
   const handleClose = (state) => !disabled && setShow(state)
-
   return (
-    <Datepicker
-      options={options(disabled)}
-      onChange={handleChange}
-      show={show && !disabled}
-      setShow={handleClose}
-      disabled={true}
-    />
+    <>
+      <Datepicker
+        options={options(disabled, value)}
+        onChange={handleChange}
+        show={show && !disabled}
+        setShow={handleClose}
+        disabled={true}
+      />
+    </>
   )
 }
 

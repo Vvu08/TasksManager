@@ -1,20 +1,31 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Textarea } from '@/components'
-import { createProject, assignUserToProject } from '@/api/projects'
+import { useRouter } from 'next/router'
+import { useDispatch } from 'react-redux'
+import { Textarea, DatesPicker } from '@/components'
+import { createStory } from '@/api/stories'
+import { setDateToSend } from '@/utils/setDate'
 
-function ProjectForm({ open, setOpen }) {
+function StoryForm({ open, setOpen, setStories }) {
+  const { query } = useRouter()
   const [title, setTitle] = React.useState('')
-  const status = 'Active'
-  const { id } = useSelector((state) => state.auth.user)
-  const { token } = useSelector((state) => state.auth)
+  const [description, setDescription] = React.useState('')
+  const [startDate, setStartDate] = React.useState(new Date())
+  const [endDate, setEndDate] = React.useState(new Date())
   const dispatch = useDispatch()
 
   const submitForm = () => {
-    dispatch(createProject({ title, status })).then(
+    dispatch(
+      createStory({
+        title,
+        description,
+        endDate: setDateToSend(endDate),
+        startDate: setDateToSend(startDate),
+        projectId: Number(query.id),
+      })
+    ).then(
       (res) =>
-        res.payload.status === 201 &&
-        assignUserToProject(id, res.payload.data.id, token)
+        res.payload.status === 200 &&
+        setStories((prev) => [...prev, res.payload.data])
     )
     setOpen(false)
   }
@@ -22,11 +33,11 @@ function ProjectForm({ open, setOpen }) {
     <article
       className={`${
         open ? 'block' : 'hidden'
-      } fixed z-1 l-0 t-0 w-full h-full overflow-auto bg-neutral-900/75`}
+      } fixed z-1 inset-0 w-full h-full overflow-auto bg-neutral-900/75`}
     >
       <section className='rounded bg-neutral-800 mx-20 md:mx-40 lg:mx-96 my-3 p-3 border-2 border-solid border-neutral-700'>
         <div className='grid grid-cols-2 mr-2'>
-          <h1 className='justify-self-start text-lg'>New Project</h1>
+          <h1 className='justify-self-start text-lg'>New Story</h1>
           <button
             onClick={() => setOpen(false)}
             className='flex items-center gap-1 text-slate-300 font-semibold text-sm px-2 py-1 rounded justify-self-end'
@@ -65,9 +76,28 @@ function ProjectForm({ open, setOpen }) {
               className='block text-slate-400 text-sm ml-1'
               htmlFor='title'
             >
-              Title of Project
+              Title of Story
             </label>
             <Textarea value={title} setValue={setTitle} />
+          </div>
+          <div>
+            <label
+              className='block text-slate-400 text-sm ml-1'
+              htmlFor='description'
+            >
+              Description
+            </label>
+            <Textarea value={description} setValue={setDescription} />
+          </div>
+          <div>
+            <div className='pl-2 grid grid-cols-2 gap-2 mb-2 items-center'>
+              <h3 className='text-slate-300'>Start Date</h3>
+              <DatesPicker value={startDate} setValue={setStartDate} />
+            </div>
+            <div className='pl-2 grid grid-cols-2 gap-2 mb-2 items-center'>
+              <h3 className='text-slate-300'>End Date</h3>
+              <DatesPicker value={endDate} setValue={setEndDate} />
+            </div>
           </div>
           <button
             onClick={submitForm}
@@ -93,7 +123,7 @@ function ProjectForm({ open, setOpen }) {
                 strokeLinecap='round'
               />
             </svg>
-            Save & Create Project
+            Save & Create Story
           </button>
         </form>
       </section>
@@ -101,4 +131,4 @@ function ProjectForm({ open, setOpen }) {
   )
 }
 
-export default ProjectForm
+export default StoryForm

@@ -25,5 +25,8 @@ export { default as Status } from './status/Status'
 export { default as SelectStatus } from './status/SelectStatus'
 
 export { default as ProjectForm } from './modals/ProjectForm'
+export { default as StoryForm } from './modals/StoryForm'
+export { default as TaskForm } from './modals/TaskForm'
+export { default as AssignForm } from './modals/AssignForm'
 
 export { default as StatusColor } from './projects/StatusColor'

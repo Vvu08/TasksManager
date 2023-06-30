@@ -1,23 +1,28 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { getProjectsByUser } from '@/api/users'
 import { Statistic, StatusColor, Hero } from '@/components'
 import Layout from '../layouts'
-import { getProjectsByUser } from '@/api/users'
-import { wrapper } from '@/redux/store'
 
-export default function Home({ projects }) {
-  const { user } = useSelector((s) => s.auth)
+export default function Home() {
+  const user = useSelector((state) => state.auth.user)
+  const projects = useSelector((state) => state.projects.projects)
   const chartData = {
     labels: ['Tasks Done', 'In Progress', 'Tasks to Do', 'Tasks to Review'],
     values: [30, 3, 25, 5],
   }
   const router = useRouter()
+  const dispatch = useDispatch()
 
-  /* useEffect(() => {
+  useEffect(() => {
     user.length === 0 && router.push('/auth/login')
-  }, [user]) */
+  }, [user])
+
+  useEffect(() => {
+    dispatch(getProjectsByUser(user.id))
+  }, [])
 
   return (
     <Layout keywords={'main page'}>
@@ -26,7 +31,7 @@ export default function Home({ projects }) {
           <Hero />
           <Statistic data={chartData} />
         </section>
-        <h1 className='text-xl mt-5 ml-5'>Your projects, {user.username}</h1>
+        <h1 className='text-xl mt-5 ml-5'>Your projects</h1>
         {projects.length > 0 ? (
           <section className='grid gap-6 lg:grid-cols-5 md:grid-cols-3 m-3'>
             {projects.map((project) => (
@@ -51,12 +56,14 @@ export default function Home({ projects }) {
   )
 }
 
-export const getStaticProps = wrapper.getStaticProps((store) => async () => {
-  await store.dispatch(getProjectsByUser(1))
-  const projects = store.getState().projects.projects
+/* export const getStaticProps = wrapper.getStaticProps((store) => async () => {
+  const { dispatch, getState } = store
+  await dispatch(getProjectsByUser({ id: 2 }))
+  const projects = getState().projects.projects
+
   return {
     props: {
       projects,
     },
   }
-})
+}) */

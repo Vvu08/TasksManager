@@ -2,7 +2,7 @@ import projectStatuses from '@/utils/projectStatus'
 import SVGRenderer from '../SVGRenderer'
 import usePopup from '@/hooks/usePopup'
 
-function SelectStatus({ value, setValue }) {
+function SelectStatus({ value, setValue, disabled }) {
   const { isOpen, toggle } = usePopup('status-dropdown')
   const matchedStatus = projectStatuses.find((status) => status.value === value)
 
@@ -19,23 +19,24 @@ function SelectStatus({ value, setValue }) {
       >
         <SVGRenderer svgCode={matchedStatus.image} />
         {matchedStatus.value}
-
-        <svg
-          className='ml-1'
-          width='24'
-          height='24'
-          viewBox='0 0 24 24'
-          fill='none'
-          xmlns='http://www.w3.org/2000/svg'
-        >
-          <path
-            d='M18 9L12 15L6 9'
-            stroke='rgb(209 213 219)'
-            stroke-width='2'
-          />
-        </svg>
+        {!disabled && (
+          <svg
+            className='ml-1'
+            width='24'
+            height='24'
+            viewBox='0 0 24 24'
+            fill='none'
+            xmlns='http://www.w3.org/2000/svg'
+          >
+            <path
+              d='M18 9L12 15L6 9'
+              stroke='rgb(209 213 219)'
+              stroke-width='2'
+            />
+          </svg>
+        )}
       </div>
-      {isOpen && (
+      {isOpen && !disabled && (
         <ul className='status-dropdown grid grid-rows-5 bg-gray-800 rounded-lg absolute'>
           {projectStatuses.map((status, index) => (
             <li

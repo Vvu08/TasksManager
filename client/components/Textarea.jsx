@@ -12,7 +12,7 @@ const Textarea = ({ value, setValue, disabled }) => {
   return (
     <textarea
       className={`text-grey-500 bg-transparent w-full overflow-hidden resize-none p-2 border-2 border-solid rounded-lg ${
-        !disabled ? 'border-slate-500/50' : 'border-transparent'
+        !disabled ? 'border-neutral-700/90' : 'border-transparent'
       } `}
       ref={textareaRef}
       defaultValue={value}

@@ -1,20 +1,29 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Textarea } from '@/components'
-import { createProject, assignUserToProject } from '@/api/projects'
+import { useRouter } from 'next/router'
+import { useDispatch } from 'react-redux'
+import { Textarea, SelectPriority } from '@/components'
+import { createTask } from '@/api/tasks'
 
-function ProjectForm({ open, setOpen }) {
+function TaskForm({ open, setOpen, setTasks }) {
+  const { query } = useRouter()
   const [title, setTitle] = React.useState('')
-  const status = 'Active'
-  const { id } = useSelector((state) => state.auth.user)
-  const { token } = useSelector((state) => state.auth)
+  const [description, setDescription] = React.useState('')
+  const [priority, setPriority] = React.useState(3)
+  const storyId = Number(query.storyId)
   const dispatch = useDispatch()
 
   const submitForm = () => {
-    dispatch(createProject({ title, status })).then(
+    dispatch(
+      createTask({
+        storyId,
+        title,
+        description,
+        priority,
+      })
+    ).then(
       (res) =>
-        res.payload.status === 201 &&
-        assignUserToProject(id, res.payload.data.id, token)
+        res.payload.status === 200 &&
+        setTasks((prev) => [...prev, res.payload.data])
     )
     setOpen(false)
   }
@@ -22,11 +31,11 @@ function ProjectForm({ open, setOpen }) {
     <article
       className={`${
         open ? 'block' : 'hidden'
-      } fixed z-1 l-0 t-0 w-full h-full overflow-auto bg-neutral-900/75`}
+      } fixed z-1 inset-0 w-full h-full overflow-auto bg-neutral-900/75`}
     >
       <section className='rounded bg-neutral-800 mx-20 md:mx-40 lg:mx-96 my-3 p-3 border-2 border-solid border-neutral-700'>
         <div className='grid grid-cols-2 mr-2'>
-          <h1 className='justify-self-start text-lg'>New Project</h1>
+          <h1 className='justify-self-start text-lg'>New Task</h1>
           <button
             onClick={() => setOpen(false)}
             className='flex items-center gap-1 text-slate-300 font-semibold text-sm px-2 py-1 rounded justify-self-end'
@@ -65,9 +74,27 @@ function ProjectForm({ open, setOpen }) {
               className='block text-slate-400 text-sm ml-1'
               htmlFor='title'
             >
-              Title of Project
+              Title of Task
             </label>
             <Textarea value={title} setValue={setTitle} />
+          </div>
+          <div>
+            <label
+              className='block text-slate-400 text-sm ml-1'
+              htmlFor='description'
+            >
+              Description
+            </label>
+            <Textarea value={description} setValue={setDescription} />
+          </div>
+          <div>
+            <label
+              className='block text-slate-400 text-sm ml-1'
+              htmlFor='priority'
+            >
+              Priority
+            </label>
+            <SelectPriority value={priority} setValue={setPriority} />
           </div>
           <button
             onClick={submitForm}
@@ -93,7 +120,7 @@ function ProjectForm({ open, setOpen }) {
                 strokeLinecap='round'
               />
             </svg>
-            Save & Create Project
+            Save & Create Task
           </button>
         </form>
       </section>
@@ -101,4 +128,4 @@ function ProjectForm({ open, setOpen }) {
   )
 }
 
-export default ProjectForm
+export default TaskForm

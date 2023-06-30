@@ -1,5 +1,6 @@
 const statuses = [
   {
+    id: 1,
     value: 'To Do',
     image: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <mask id="path-1-outside-1_1654_8329" maskUnits="userSpaceOnUse" x="3" y="4" width="17" height="17" fill="black">
@@ -12,6 +13,7 @@ const statuses = [
     color: '-sky-400',
   },
   {
+    id: 2,
     value: 'In Progress',
     image: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <circle cx="12" cy="13" r="7" stroke="rgb(251 146 60)" strokeWidth="2"/>
@@ -23,6 +25,7 @@ const statuses = [
     color: '-orange-400',
   },
   {
+    id: 3,
     value: 'Pending',
     image: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <circle cx="12" cy="12" r="1" stroke="rgb(203 213 225)" strokeWidth="2"/>
@@ -33,6 +36,7 @@ const statuses = [
     color: '-slate-300',
   },
   {
+    id: 4,
     value: 'Done',
     image: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <circle cx="12" cy="12" r="9" stroke="rgb(16 185 129)" strokeWidth="2"/>

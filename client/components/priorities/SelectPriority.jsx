@@ -51,24 +51,24 @@ function SelectPriority({ value, setValue, disabled, isFilter }) {
               cy='12'
               r='1'
               stroke='rgb(100 116 139)'
-              stroke-width='2'
-              stroke-linecap='round'
+              strokeWidth='2'
+              strokeLinecap='round'
             />
             <circle
               cx='6'
               cy='12'
               r='1'
               stroke='rgb(100 116 139)'
-              stroke-width='2'
-              stroke-linecap='round'
+              strokeWidth='2'
+              strokeLinecap='round'
             />
             <circle
               cx='18'
               cy='12'
               r='1'
               stroke='rgb(100 116 139)'
-              stroke-width='2'
-              stroke-linecap='round'
+              strokeWidth='2'
+              strokeLinecap='round'
             />
           </svg>
         )}

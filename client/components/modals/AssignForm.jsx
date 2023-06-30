@@ -1,32 +1,46 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import { useDispatch } from 'react-redux'
 import { Textarea } from '@/components'
-import { createProject, assignUserToProject } from '@/api/projects'
+import { getUsers } from '@/api/users'
+import { assignUserToProject } from '@/api/projects'
 
-function ProjectForm({ open, setOpen }) {
-  const [title, setTitle] = React.useState('')
-  const status = 'Active'
-  const { id } = useSelector((state) => state.auth.user)
-  const { token } = useSelector((state) => state.auth)
+function AssignForm({ open, setOpen }) {
+  const { id } = useRouter().query
+  const [users, setUsers] = useState([])
+  const [selectedUser, setSelectedUser] = useState({})
   const dispatch = useDispatch()
 
   const submitForm = () => {
-    dispatch(createProject({ title, status })).then(
-      (res) =>
-        res.payload.status === 201 &&
-        assignUserToProject(id, res.payload.data.id, token)
-    )
+    dispatch(assignUserToProject({ projectId: id, userId: selectedUser.id }))
     setOpen(false)
   }
+
+  useEffect(() => {
+    dispatch(getUsers()).then((res) => {
+      if (res.payload)
+        if (res.payload.status === 200) {
+          setUsers(res.payload.data)
+          setSelectedUser(res.payload.data[0])
+        }
+    })
+  }, [])
+
+  const filteredUsers = users.filter(
+    (user) => user.role.id !== 2 && user.role.id !== 3
+  )
+
   return (
     <article
       className={`${
         open ? 'block' : 'hidden'
-      } fixed z-1 l-0 t-0 w-full h-full overflow-auto bg-neutral-900/75`}
+      } fixed z-1 inset-0 w-full h-full overflow-auto bg-neutral-900/75`}
     >
       <section className='rounded bg-neutral-800 mx-20 md:mx-40 lg:mx-96 my-3 p-3 border-2 border-solid border-neutral-700'>
         <div className='grid grid-cols-2 mr-2'>
-          <h1 className='justify-self-start text-lg'>New Project</h1>
+          <h1 className='justify-self-start text-lg'>
+            Assign new User to Project
+          </h1>
           <button
             onClick={() => setOpen(false)}
             className='flex items-center gap-1 text-slate-300 font-semibold text-sm px-2 py-1 rounded justify-self-end'
@@ -60,15 +74,21 @@ function ProjectForm({ open, setOpen }) {
           </button>
         </div>
         <form className='grid gap-4 mt-4' onSubmit={(e) => e.preventDefault()}>
-          <div>
-            <label
-              className='block text-slate-400 text-sm ml-1'
-              htmlFor='title'
+          {filteredUsers.map((user, index) => (
+            <div
+              key={user.id}
+              onClick={() => setSelectedUser(user)}
+              className={`flex justify-items-stretch border-2 border-solid p-2 rounded ${
+                user === selectedUser
+                  ? 'bg-neutral-900 border-sky-900'
+                  : 'border-neutral-600'
+              }`}
             >
-              Title of Project
-            </label>
-            <Textarea value={title} setValue={setTitle} />
-          </div>
+              <label htmlFor={user.id}>
+                {index + 1}. {user.username} - {user.role.type}
+              </label>
+            </div>
+          ))}
           <button
             onClick={submitForm}
             className='flex mx-auto gap-1 bg-sky-700/75 hover:bg-sky-700 text-slate-100 px-2 py-2 rounded justify-self-start mb-2'
@@ -93,7 +113,7 @@ function ProjectForm({ open, setOpen }) {
                 strokeLinecap='round'
               />
             </svg>
-            Save & Create Project
+            Assign Selected User
           </button>
         </form>
       </section>
@@ -101,4 +121,4 @@ function ProjectForm({ open, setOpen }) {
   )
 }
 
-export default ProjectForm
+export default AssignForm

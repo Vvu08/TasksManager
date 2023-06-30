@@ -1,4 +1,5 @@
 import { instanceOne } from './axios'
+import { createAsyncThunk } from '@reduxjs/toolkit'
 const name = 'story'
 
 export const getStories = async () => {
@@ -9,59 +10,90 @@ export const getStories = async () => {
   }
 }
 
-export const getStory = async (id) => {
-  try {
-    return await instanceOne.get(name + '/' + id)
-  } catch (error) {
-    throw error
+export const getStory = createAsyncThunk(
+  'stories/getStory',
+  async (id, { getState }) => {
+    try {
+      const { token } = getState().auth
+      return await instanceOne.get(name + '/' + id, {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      })
+    } catch (error) {
+      throw error
+    }
   }
-}
+)
 
-export const getTasksByStory = async (id) => {
-  try {
-    return await instanceOne.get(name + '/' + id + '/task')
-  } catch (error) {
-    throw error
+export const getTasksByStory = createAsyncThunk(
+  'stories/getTasksByStory',
+  async (id, { getState }) => {
+    try {
+      const { token } = getState().auth
+      return await instanceOne.get(name + '/' + id + '/task', {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      })
+    } catch (error) {
+      throw error
+    }
   }
-}
+)
 
-export const createStory = async (
-  title,
-  description,
-  endDate,
-  startDate,
-  projectId
-) => {
-  try {
-    return await instanceOne.post(name + '/create?projectId=' + projectId, {
-      title,
-      description,
-      endDate,
-      startDate,
-    })
-  } catch (error) {
-    throw error
+export const createStory = createAsyncThunk(
+  'stories/createStory',
+  async (
+    { title, description, endDate, startDate, projectId },
+    { getState }
+  ) => {
+    try {
+      const token = getState().auth.token
+      return await instanceOne.post(
+        name + '?projectId=' + projectId,
+        {
+          title,
+          description,
+          endDate,
+          startDate,
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + token,
+          },
+        }
+      )
+    } catch (error) {
+      throw error
+    }
   }
-}
+)
 
-export const updateStory = async (
-  id,
-  title,
-  description,
-  endDate,
-  startDate
-) => {
-  try {
-    return await instanceOne.put(name + '/' + id + '/update', {
-      title,
-      description,
-      endDate,
-      startDate,
-    })
-  } catch (error) {
-    throw error
+export const updateStory = createAsyncThunk(
+  'stories/updateStory',
+  async ({ id, title, description, endDate, startDate }, { getState }) => {
+    try {
+      const { token } = getState().auth
+      return await instanceOne.put(
+        name + '/' + id,
+        {
+          title,
+          description,
+          endDate,
+          startDate,
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + token,
+          },
+        }
+      )
+    } catch (error) {
+      throw error
+    }
   }
-}
+)
 
 export const deleteStory = async (id) => {
   try {

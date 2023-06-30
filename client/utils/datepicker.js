@@ -1,4 +1,6 @@
-const options = (disabled) => {
+const options = (disabled, defaultDate) => {
+  const parsedDefaultDate = defaultDate ? new Date(defaultDate) : new Date()
+  const isValidDate = !isNaN(parsedDefaultDate.getTime())
   return {
     autoHide: true,
     todayBtn: false,
@@ -21,7 +23,7 @@ const options = (disabled) => {
       next: () => <span className='text-gray-300'>Next</span>,
     },
     datepickerClassNames: 'top-40',
-    defaultDate: new Date(),
+    defaultDate: isValidDate ? parsedDefaultDate : new Date(),
     language: 'en',
   }
 }

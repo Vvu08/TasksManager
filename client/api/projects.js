@@ -10,28 +10,42 @@ export const getProjects = async () => {
   }
 }
 
-export const getProject = async (id) => {
-  try {
-    return await instanceOne.get(name + '/' + id)
-  } catch (error) {
-    throw error
+export const getProject = createAsyncThunk(
+  'projects/getProject',
+  async (id, { getState }) => {
+    try {
+      return await instanceOne.get(name + '/' + id, {
+        headers: {
+          Authorization: 'Bearer ' + getState().auth.token,
+        },
+      })
+    } catch (error) {
+      throw error
+    }
   }
-}
+)
 
-export const getStoriesByProject = async (id) => {
-  console.log(id)
-  try {
-    return await instanceOne.get(name + '/' + id + '/story')
-  } catch (error) {
-    throw error
+export const getStoriesByProject = createAsyncThunk(
+  'projects/storiesByProject',
+  async (id, { getState }) => {
+    try {
+      const { token } = getState().auth
+      return await instanceOne.get(name + '/' + id + '/story', {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      })
+    } catch (error) {
+      throw error
+    }
   }
-}
+)
 
 export const createProject = createAsyncThunk(
   'projects/create',
   async ({ title, status }, { getState }) => {
     try {
-      const { username, password } = getState().auth.user
+      const { token } = getState().auth
       return await instanceOne.post(
         name,
         {
@@ -39,7 +53,9 @@ export const createProject = createAsyncThunk(
           status,
         },
         {
-          Authorization: 'Basic ' + btoa('testuser2' + ':' + 'testuser2'),
+          headers: {
+            Authorization: 'Bearer ' + token,
+          },
         }
       )
     } catch (error) {
@@ -48,24 +64,46 @@ export const createProject = createAsyncThunk(
   }
 )
 
-export const assignUserToProject = async (userId, projectId) => {
-  try {
-    return await instanceOne.put(name + '/' + projectId + '/assign/' + userId)
-  } catch (error) {
-    throw error
+export const assignUserToProject = createAsyncThunk(
+  'projects/assignToProject',
+  async ({ userId, projectId }, { getState }) => {
+    try {
+      return await instanceOne.post(
+        name + '/' + projectId + '/assign/' + userId,
+        {},
+        {
+          headers: {
+            Authorization: 'Bearer ' + getState().auth.token,
+          },
+        }
+      )
+    } catch (error) {
+      throw error
+    }
   }
-}
+)
 
-export const updateProject = async (id, title, status) => {
-  try {
-    return await instanceOne.put(name + '/' + id + '/update', {
-      title,
-      status,
-    })
-  } catch (error) {
-    throw error
+export const updateProject = createAsyncThunk(
+  'projects/create',
+  async ({ id, title, status }, { getState }) => {
+    try {
+      return await instanceOne.put(
+        name + '/' + id,
+        {
+          title,
+          status,
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + getState().auth.token,
+          },
+        }
+      )
+    } catch (error) {
+      throw error
+    }
   }
-}
+)
 
 export const deleteProject = async (id) => {
   try {
