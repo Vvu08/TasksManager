@@ -18,5 +18,7 @@ public interface UserService {
 
     List<UserDTO> getAllUsers();
 
+    List<UserDTO> getUsersByProjectId(int projectId);
+
     void deleteUserById(int userId);
 }

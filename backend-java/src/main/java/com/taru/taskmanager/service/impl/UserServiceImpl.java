@@ -2,7 +2,9 @@ package com.taru.taskmanager.service.impl;
 
 import com.taru.taskmanager.dto.UserDTO;
 import com.taru.taskmanager.exception.AccessDeniedException;
+import com.taru.taskmanager.exception.RoleNotFoundException;
 import com.taru.taskmanager.exception.UserNotFoundException;
+import com.taru.taskmanager.mapper.RoleMapper;
 import com.taru.taskmanager.mapper.UserMapper;
 import com.taru.taskmanager.models.Task;
 import com.taru.taskmanager.models.User;
@@ -113,12 +115,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserDTO> getUsersByProjectId(int projectId) {
+
+        List<UserProjects> userProjects = userProjectsRepository.findByProjectId(projectId);
+
+        return userProjects.stream().map(up -> {
+            UserDTO temp = UserMapper.mapToDto(up.getUser());
+            UserRole tempUserRole = userRoleRepository.findByUserId(up.getUser().getId())
+                    .orElseThrow(() ->
+                            new RoleNotFoundException("User with id = " + up.getUser().getId() + " - don't have a role!")
+                    );
+            temp.setRole(RoleMapper.mapToDto(tempUserRole.getRole()));
+            return temp;
+        }).toList();
+    }
+
+    @Override
     public void deleteUserById(int userId) {
 
         UserRole userRole = userRoleRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("User with id = " + userId + " - does not have a role!"));
 
-        if (userRole.getRole().getType().equals("ROLE_ADMIN")){
+        if (userRole.getRole().getType().equals("ROLE_ADMIN")) {
             throw new AccessDeniedException("You can't delete user with role ADMIN!");
         }
 

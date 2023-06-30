@@ -38,6 +38,14 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/project/{id}/users")
+    public ResponseEntity<List<UserDTO>> getAllUsersByProjectId(@PathVariable("id") int projectId) {
+
+        List<UserDTO> response = userService.getUsersByProjectId(projectId);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/user/{id}")
     public ResponseEntity<UserDTO> updateUserById(@RequestBody UserDTO userDTO, @PathVariable("id") int userId) {
