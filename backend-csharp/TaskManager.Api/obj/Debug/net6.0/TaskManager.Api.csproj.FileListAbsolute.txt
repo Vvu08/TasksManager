@@ -102,3 +102,12 @@ C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Api\obj\De
 C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Api\obj\Debug\net6.0\TaskManager.Api.pdb
 C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Api\obj\Debug\net6.0\TaskManager.Api.genruntimeconfig.cache
 C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Api\obj\Debug\net6.0\ref\TaskManager.Api.dll
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Api\bin\Debug\net6.0\Microsoft.AspNetCore.Connections.Abstractions.dll
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Api\bin\Debug\net6.0\Microsoft.AspNetCore.SignalR.Client.Core.dll
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Api\bin\Debug\net6.0\Microsoft.AspNetCore.SignalR.Common.dll
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Api\bin\Debug\net6.0\Microsoft.AspNetCore.SignalR.Protocols.Json.dll
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Api\bin\Debug\net6.0\Microsoft.Extensions.Features.dll
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Api\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Api\bin\Debug\net6.0\System.IO.Pipelines.dll
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Api\bin\Debug\net6.0\System.Net.WebSockets.WebSocketProtocol.dll
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Api\bin\Debug\net6.0\System.Threading.Channels.dll
