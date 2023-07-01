@@ -5,6 +5,6 @@ namespace TaskManager.Notification.Interfaces;
 
 public interface INotificationService
 {
-    Task<PublicMessage> SendMessage(SendMessageModel messageModel);
-    Task<bool> ConfirmTaskByMessage();
+    Task SendNotification(message msg);
+
 }

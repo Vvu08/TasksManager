@@ -12,3 +12,17 @@ C:\Users\kosty\RiderProjects\TaskManager\TaskManager.Notification\obj\Debug\net6
 C:\Users\kosty\RiderProjects\TaskManager\TaskManager.Notification\obj\Debug\net6.0\TaskManager.Notification.pdb
 C:\Users\kosty\RiderProjects\TaskManager\TaskManager.Notification\obj\Debug\net6.0\TaskManager.Notification.genruntimeconfig.cache
 C:\Users\kosty\RiderProjects\TaskManager\TaskManager.Notification\obj\Debug\net6.0\ref\TaskManager.Notification.dll
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Notification\bin\Debug\net6.0\TaskManager.Notification.deps.json
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Notification\bin\Debug\net6.0\TaskManager.Notification.runtimeconfig.json
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Notification\bin\Debug\net6.0\TaskManager.Notification.dll
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Notification\bin\Debug\net6.0\TaskManager.Notification.pdb
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Notification\obj\Debug\net6.0\TaskManager.Notification.csproj.AssemblyReference.cache
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Notification\obj\Debug\net6.0\TaskManager.Notification.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Notification\obj\Debug\net6.0\TaskManager.Notification.AssemblyInfoInputs.cache
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Notification\obj\Debug\net6.0\TaskManager.Notification.AssemblyInfo.cs
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Notification\obj\Debug\net6.0\TaskManager.Notification.csproj.CoreCompileInputs.cache
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Notification\obj\Debug\net6.0\TaskManager.Notification.dll
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Notification\obj\Debug\net6.0\refint\TaskManager.Notification.dll
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Notification\obj\Debug\net6.0\TaskManager.Notification.pdb
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Notification\obj\Debug\net6.0\TaskManager.Notification.genruntimeconfig.cache
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Notification\obj\Debug\net6.0\ref\TaskManager.Notification.dll

@@ -1,0 +1,17 @@
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Statistics\bin\Debug\net6.0\TaskManager.Statistics.deps.json
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Statistics\bin\Debug\net6.0\TaskManager.Statistics.runtimeconfig.json
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Statistics\bin\Debug\net6.0\TaskManager.Statistics.dll
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Statistics\bin\Debug\net6.0\TaskManager.Statistics.pdb
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Statistics\bin\Debug\net6.0\TaskManager.Notification.dll
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Statistics\bin\Debug\net6.0\TaskManager.Notification.pdb
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Statistics\obj\Debug\net6.0\TaskManager.Statistics.csproj.AssemblyReference.cache
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Statistics\obj\Debug\net6.0\TaskManager.Statistics.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Statistics\obj\Debug\net6.0\TaskManager.Statistics.AssemblyInfoInputs.cache
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Statistics\obj\Debug\net6.0\TaskManager.Statistics.AssemblyInfo.cs
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Statistics\obj\Debug\net6.0\TaskManager.Statistics.csproj.CoreCompileInputs.cache
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Statistics\obj\Debug\net6.0\TaskManager.Statistics.csproj.CopyComplete
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Statistics\obj\Debug\net6.0\TaskManager.Statistics.dll
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Statistics\obj\Debug\net6.0\refint\TaskManager.Statistics.dll
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Statistics\obj\Debug\net6.0\TaskManager.Statistics.pdb
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Statistics\obj\Debug\net6.0\TaskManager.Statistics.genruntimeconfig.cache
+C:\Users\kosty\RiderProjects\TasksManager2\backend-csharp\TaskManager.Statistics\obj\Debug\net6.0\ref\TaskManager.Statistics.dll

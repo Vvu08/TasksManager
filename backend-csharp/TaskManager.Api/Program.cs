@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TaskManager.Notification;
 using TaskManager.Notification.Context;
 using TaskManager.Statistics.Interfaces;
 using TaskManager.Statistics.Services;
@@ -40,5 +41,10 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapHub<NotificationHub>("/notificationHub");
+});
 
 app.Run();

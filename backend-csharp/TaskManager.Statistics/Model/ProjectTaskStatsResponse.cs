@@ -4,12 +4,12 @@ namespace TaskManager.Statistics.Model;
 
 public class ProjectTaskStatsResponse
 {
-    public ICollection<PublicStatus> TaskType { get; set; }
-    public int TaskCounter { get; set; }
+    public string Status { get; set; }
+    public int Count { get; set; }
 
-    public ProjectTaskStatsResponse(ICollection<PublicStatus> taskType, int taskCounter)
+    public ProjectTaskStatsResponse(string stats, int cnt)
     {
-        TaskType = taskType;
-        TaskCounter = taskCounter;
+        Status = stats;
+        Count = cnt;
     }
 }

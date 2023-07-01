@@ -13,15 +13,10 @@ public class NotificationService : INotificationService
     {
         _dataContext = context;
     }
-    
-    
-    public Task<PublicMessage> SendMessage(SendMessageModel messageModel)
-    {
-        throw new NotImplementedException();
-    }
 
-    public Task<bool> ConfirmTaskByMessage()
+    public Task SendNotification(message msg)
     {
         throw new NotImplementedException();
     }
+    
 }

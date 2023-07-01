@@ -12,7 +12,8 @@
           "Microsoft.EntityFrameworkCore.Design": "7.0.7",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "7.0.4",
           "Swashbuckle.AspNetCore": "6.5.0",
-          "TaskManager.Notification": "1.0.0"
+          "TaskManager.Notification": "1.0.0",
+          "TaskManager.Statistics": "1.0.0"
         },
         "runtime": {
           "TaskManager.Api.dll": {}
@@ -321,6 +322,16 @@
         "runtime": {
           "TaskManager.Notification.dll": {}
         }
+      },
+      "TaskManager.Statistics/1.0.0": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "7.0.7",
+          "Npgsql.EntityFrameworkCore.PostgreSQL": "7.0.4",
+          "TaskManager.Notification": "1.0.0"
+        },
+        "runtime": {
+          "TaskManager.Statistics.dll": {}
+        }
       }
     }
   },
@@ -534,6 +545,11 @@
       "hashPath": "system.text.json.7.0.0.nupkg.sha512"
     },
     "TaskManager.Notification/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "TaskManager.Statistics/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

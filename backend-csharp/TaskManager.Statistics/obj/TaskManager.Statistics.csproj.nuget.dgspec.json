@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\kosty\\RiderProjects\\TaskManager\\TaskManager.Statistics\\TaskManager.Statistics.csproj": {}
+    "C:\\Users\\kosty\\RiderProjects\\TasksManager2\\backend-csharp\\TaskManager.Statistics\\TaskManager.Statistics.csproj": {}
   },
   "projects": {
-    "C:\\Users\\kosty\\RiderProjects\\TaskManager\\TaskManager.Notification\\TaskManager.Notification.csproj": {
+    "C:\\Users\\kosty\\RiderProjects\\TasksManager2\\backend-csharp\\TaskManager.Notification\\TaskManager.Notification.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kosty\\RiderProjects\\TaskManager\\TaskManager.Notification\\TaskManager.Notification.csproj",
+        "projectUniqueName": "C:\\Users\\kosty\\RiderProjects\\TasksManager2\\backend-csharp\\TaskManager.Notification\\TaskManager.Notification.csproj",
         "projectName": "TaskManager.Notification",
-        "projectPath": "C:\\Users\\kosty\\RiderProjects\\TaskManager\\TaskManager.Notification\\TaskManager.Notification.csproj",
+        "projectPath": "C:\\Users\\kosty\\RiderProjects\\TasksManager2\\backend-csharp\\TaskManager.Notification\\TaskManager.Notification.csproj",
         "packagesPath": "C:\\Users\\kosty\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kosty\\RiderProjects\\TaskManager\\TaskManager.Notification\\obj\\",
+        "outputPath": "C:\\Users\\kosty\\RiderProjects\\TasksManager2\\backend-csharp\\TaskManager.Notification\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\kosty\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,14 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.AspNetCore.SignalR": {
+              "target": "Package",
+              "version": "[1.1.0, )"
+            },
+            "Microsoft.AspNetCore.SignalR.Client.Core": {
+              "target": "Package",
+              "version": "[7.0.8, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[7.0.7, )"
@@ -75,14 +83,14 @@
         }
       }
     },
-    "C:\\Users\\kosty\\RiderProjects\\TaskManager\\TaskManager.Statistics\\TaskManager.Statistics.csproj": {
+    "C:\\Users\\kosty\\RiderProjects\\TasksManager2\\backend-csharp\\TaskManager.Statistics\\TaskManager.Statistics.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kosty\\RiderProjects\\TaskManager\\TaskManager.Statistics\\TaskManager.Statistics.csproj",
+        "projectUniqueName": "C:\\Users\\kosty\\RiderProjects\\TasksManager2\\backend-csharp\\TaskManager.Statistics\\TaskManager.Statistics.csproj",
         "projectName": "TaskManager.Statistics",
-        "projectPath": "C:\\Users\\kosty\\RiderProjects\\TaskManager\\TaskManager.Statistics\\TaskManager.Statistics.csproj",
+        "projectPath": "C:\\Users\\kosty\\RiderProjects\\TasksManager2\\backend-csharp\\TaskManager.Statistics\\TaskManager.Statistics.csproj",
         "packagesPath": "C:\\Users\\kosty\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kosty\\RiderProjects\\TaskManager\\TaskManager.Statistics\\obj\\",
+        "outputPath": "C:\\Users\\kosty\\RiderProjects\\TasksManager2\\backend-csharp\\TaskManager.Statistics\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\kosty\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -99,8 +107,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\kosty\\RiderProjects\\TaskManager\\TaskManager.Notification\\TaskManager.Notification.csproj": {
-                "projectPath": "C:\\Users\\kosty\\RiderProjects\\TaskManager\\TaskManager.Notification\\TaskManager.Notification.csproj"
+              "C:\\Users\\kosty\\RiderProjects\\TasksManager2\\backend-csharp\\TaskManager.Notification\\TaskManager.Notification.csproj": {
+                "projectPath": "C:\\Users\\kosty\\RiderProjects\\TasksManager2\\backend-csharp\\TaskManager.Notification\\TaskManager.Notification.csproj"
               }
             }
           }

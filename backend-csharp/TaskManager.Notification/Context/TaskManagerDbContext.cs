@@ -16,19 +16,23 @@ public partial class TaskManagerDbContext : DbContext
     {
     }
 
-    public virtual DbSet<PublicMessage> PublicMessages { get; set; }
+    public virtual DbSet<message> messages { get; set; }
 
-    public virtual DbSet<PublicProject> PublicProjects { get; set; }
+    public virtual DbSet<project> projects { get; set; }
 
-    public virtual DbSet<PublicRole> PublicRoles { get; set; }
+    public virtual DbSet<role> roles { get; set; }
 
-    public virtual DbSet<PublicStatus> PublicStatuses { get; set; }
+    public virtual DbSet<status> statuses { get; set; }
 
-    public virtual DbSet<PublicStory> PublicStories { get; set; }
+    public virtual DbSet<status_task> status_tasks { get; set; }
 
-    public virtual DbSet<PublicTask> PublicTasks { get; set; }
+    public virtual DbSet<story> stories { get; set; }
 
-    public virtual DbSet<PublicUser> PublicUsers { get; set; }
+    public virtual DbSet<task> tasks { get; set; }
+
+    public virtual DbSet<user> users { get; set; }
+
+    public virtual DbSet<user_project> user_projects { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -36,216 +40,94 @@ public partial class TaskManagerDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<PublicMessage>(entity =>
+        modelBuilder.Entity<message>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("messages_pk");
+            entity.HasKey(e => e.id).HasName("messages_pk");
 
-            entity.ToTable("public.messages");
-
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
-            entity.Property(e => e.ReceiverId).HasColumnName("receiver_id");
-            entity.Property(e => e.SenderId).HasColumnName("sender_id");
-            entity.Property(e => e.TaskId).HasColumnName("task_id");
-            entity.Property(e => e.Text)
-                .HasMaxLength(255)
-                .HasColumnName("text");
-
-            entity.HasOne(d => d.Receiver).WithMany(p => p.PublicMessageReceivers)
-                .HasForeignKey(d => d.ReceiverId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("messages_fk1");
-
-            entity.HasOne(d => d.Sender).WithMany(p => p.PublicMessageSenders)
-                .HasForeignKey(d => d.SenderId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("messages_fk0");
-
-            entity.HasOne(d => d.Task).WithMany(p => p.PublicMessages)
-                .HasForeignKey(d => d.TaskId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("messages_fk2");
+            entity.Property(e => e.id).ValueGeneratedNever();
         });
 
-        modelBuilder.Entity<PublicProject>(entity =>
+        modelBuilder.Entity<project>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("projects_pk");
-
-            entity.ToTable("public.projects");
-
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
-            entity.Property(e => e.Status)
-                .HasMaxLength(50)
-                .HasColumnName("status");
-            entity.Property(e => e.Title)
-                .HasMaxLength(100)
-                .HasColumnName("title");
+            entity.HasKey(e => e.id).HasName("projects_pkey");
         });
 
-        modelBuilder.Entity<PublicRole>(entity =>
+        modelBuilder.Entity<role>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("roles_pk");
-
-            entity.ToTable("public.roles");
-
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
-            entity.Property(e => e.Type)
-                .HasMaxLength(20)
-                .HasColumnName("type");
+            entity.HasKey(e => e.id).HasName("roles_pkey");
         });
 
-        modelBuilder.Entity<PublicStatus>(entity =>
+        modelBuilder.Entity<status>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("status_pk");
-
-            entity.ToTable("public.status");
-
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(20)
-                .HasColumnName("name");
+            entity.HasKey(e => e.id).HasName("status_pkey");
         });
 
-        modelBuilder.Entity<PublicStory>(entity =>
+        modelBuilder.Entity<status_task>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("stories_pk");
-
-            entity.ToTable("public.stories");
-
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
-            entity.Property(e => e.Description)
-                .HasMaxLength(255)
-                .HasColumnName("description");
-            entity.Property(e => e.EndDate).HasColumnName("end_date");
-            entity.Property(e => e.ProjectId).HasColumnName("project_id");
-            entity.Property(e => e.StartDate).HasColumnName("start_date");
-            entity.Property(e => e.Title)
-                .HasMaxLength(100)
-                .HasColumnName("title");
-
-            entity.HasOne(d => d.Project).WithMany(p => p.PublicStories)
-                .HasForeignKey(d => d.ProjectId)
+            entity.HasOne(d => d.status).WithMany()
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("stories_fk0");
+                .HasConstraintName("fkphbjl15elp7s4jxqxjtoe0gct");
+
+            entity.HasOne(d => d.task).WithMany()
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fkjoqmm3bnnswq4qpnnwke8ym88");
         });
 
-        modelBuilder.Entity<PublicTask>(entity =>
+        modelBuilder.Entity<story>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("tasks_pk");
+            entity.HasKey(e => e.id).HasName("stories_pkey");
 
-            entity.ToTable("public.tasks");
-
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
-            entity.Property(e => e.Description)
-                .HasMaxLength(255)
-                .HasColumnName("description");
-            entity.Property(e => e.Priority).HasColumnName("priority");
-            entity.Property(e => e.StoryId).HasColumnName("story_id");
-            entity.Property(e => e.Title)
-                .HasMaxLength(100)
-                .HasColumnName("title");
-            entity.Property(e => e.UserId).HasColumnName("user_id");
-
-            entity.HasOne(d => d.Story).WithMany(p => p.PublicTasks)
-                .HasForeignKey(d => d.StoryId)
+            entity.HasOne(d => d.project).WithMany(p => p.stories)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("tasks_fk0");
+                .HasConstraintName("fk40bgbra9e1bmchul1vskdq8hq");
+        });
 
-            entity.HasOne(d => d.User).WithMany(p => p.PublicTasks)
-                .HasForeignKey(d => d.UserId)
+        modelBuilder.Entity<task>(entity =>
+        {
+            entity.HasKey(e => e.id).HasName("tasks_pkey");
+
+            entity.HasOne(d => d.story).WithMany(p => p.tasks)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("tasks_fk1");
+                .HasConstraintName("fk4htjkrms846vp5xcb3vlvvucn");
 
-            entity.HasMany(d => d.Statuses).WithMany(p => p.Tasks)
+            entity.HasOne(d => d.task_creatorNavigation).WithMany(p => p.tasktask_creatorNavigations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("tasks_users_id_fk");
+
+            entity.HasOne(d => d.user).WithMany(p => p.taskusers).HasConstraintName("fk6s1ob9k4ihi75xbxe2w0ylsdh");
+        });
+
+        modelBuilder.Entity<user>(entity =>
+        {
+            entity.HasKey(e => e.id).HasName("users_pkey");
+
+            entity.HasMany(d => d.roles).WithMany(p => p.users)
                 .UsingEntity<Dictionary<string, object>>(
-                    "PublicStatusTask",
-                    r => r.HasOne<PublicStatus>().WithMany()
-                        .HasForeignKey("StatusId")
+                    "user_role",
+                    r => r.HasOne<role>().WithMany()
+                        .HasForeignKey("role_id")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("status_tasks_fk1"),
-                    l => l.HasOne<PublicTask>().WithMany()
-                        .HasForeignKey("TaskId")
+                        .HasConstraintName("fkh8ciramu9cc9q3qcqiv4ue8a6"),
+                    l => l.HasOne<user>().WithMany()
+                        .HasForeignKey("user_id")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("status_tasks_fk0"),
+                        .HasConstraintName("fkhfh9dx7w3ubf1co1vdev94g3f"),
                     j =>
                     {
-                        j.HasKey("TaskId", "StatusId").HasName("status_tasks_pk");
-                        j.ToTable("public.status_tasks");
-                        j.IndexerProperty<int>("TaskId").HasColumnName("task_id");
-                        j.IndexerProperty<int>("StatusId").HasColumnName("status_id");
+                        j.HasKey("user_id", "role_id").HasName("user_roles_pk");
+                        j.ToTable("user_roles");
                     });
         });
 
-        modelBuilder.Entity<PublicUser>(entity =>
+        modelBuilder.Entity<user_project>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("users_pk");
+            entity.HasOne(d => d.project).WithMany()
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fkof7c4wufgerxtl9moqol6c516");
 
-            entity.ToTable("public.users");
-
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
-            entity.Property(e => e.Email)
-                .HasMaxLength(255)
-                .HasColumnName("email");
-            entity.Property(e => e.JobTitle)
-                .HasMaxLength(50)
-                .HasColumnName("job_title");
-            entity.Property(e => e.Password)
-                .HasMaxLength(255)
-                .HasColumnName("password");
-            entity.Property(e => e.Username)
-                .HasMaxLength(255)
-                .HasColumnName("username");
-
-            entity.HasMany(d => d.Projects).WithMany(p => p.Users)
-                .UsingEntity<Dictionary<string, object>>(
-                    "PublicUserProject",
-                    r => r.HasOne<PublicProject>().WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("user_projects_fk1"),
-                    l => l.HasOne<PublicUser>().WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("user_projects_fk0"),
-                    j =>
-                    {
-                        j.HasKey("UserId", "ProjectId").HasName("user_projects_pk");
-                        j.ToTable("public.user_projects");
-                        j.IndexerProperty<int>("UserId").HasColumnName("user_id");
-                        j.IndexerProperty<int>("ProjectId").HasColumnName("project_id");
-                    });
-
-            entity.HasMany(d => d.Roles).WithMany(p => p.Users)
-                .UsingEntity<Dictionary<string, object>>(
-                    "PublicUserRole",
-                    r => r.HasOne<PublicRole>().WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("user_roles_fk1"),
-                    l => l.HasOne<PublicUser>().WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("user_roles_fk0"),
-                    j =>
-                    {
-                        j.HasKey("UserId", "RoleId").HasName("user_roles_pk");
-                        j.ToTable("public.user_roles");
-                        j.IndexerProperty<int>("UserId").HasColumnName("user_id");
-                        j.IndexerProperty<int>("RoleId").HasColumnName("role_id");
-                    });
+            entity.HasOne(d => d.user).WithMany()
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fkr25ilmlcm8ugp8i3rogl6jp0l");
         });
 
         OnModelCreatingPartial(modelBuilder);
