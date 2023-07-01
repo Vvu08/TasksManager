@@ -99,11 +99,8 @@ function Tracker() {
   return (
     <ProjectLayout>
       <section className='m-3 px-10'>
-        <div className='flex gap-4 items-end mb-4'>
+        <div className='mb-4'>
           <h1 className='text-xl font-bold'>Tasks</h1>
-          <button className='text-sm text-slate-400 hover:text-slate-300'>
-            + Create Task
-          </button>
         </div>
         <DragDropContext onDragEnd={handleDragAndDrop}>
           <div className='grid grid-cols-4 gap-5'>
