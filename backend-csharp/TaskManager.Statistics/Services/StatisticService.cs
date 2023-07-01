@@ -52,10 +52,8 @@ public class StatisticService : IStatisticService
     public async  Task<List<Tasks>> SortByPriorityAndUser(int projectId, int userId, string sortType)
     {
         var tasks = _dataContext.Tasks
-            .Include(p => p.Story
-                .Project)
-            .Where(p => p.UserId == userId && p.Story.Project.Id == projectId);
- 
+            .Where(p => p.UserId == userId && p.Story.ProjectId == projectId);
+        
         switch (sortType)
         {
             case "desc":
