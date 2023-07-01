@@ -5,6 +5,6 @@ namespace TaskManager.Notification.Interfaces;
 
 public interface INotificationService
 {
-    Task SendNotification(message msg);
+    Task SendNotification(Messages msg);
 
 }

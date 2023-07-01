@@ -25,7 +25,7 @@ builder.Services.AddCors(options =>
             .AllowCredentials());
 });
 
-builder.Services.AddScoped<IStatisticService, StatisricService>();
+builder.Services.AddScoped<IStatisticService, StatisticService>();
 
 var app = builder.Build();
 

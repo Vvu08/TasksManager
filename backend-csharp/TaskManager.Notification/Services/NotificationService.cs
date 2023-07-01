@@ -14,7 +14,7 @@ public class NotificationService : INotificationService
         _dataContext = context;
     }
 
-    public Task SendNotification(message msg)
+    public Task SendNotification(Messages msg)
     {
         throw new NotImplementedException();
     }

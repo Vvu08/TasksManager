@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TaskManager.Notification.Entities;
 using TaskManager.Statistics.Interfaces;
 
 namespace TaskManager.Controllers;
@@ -17,24 +18,24 @@ public class StatisticController : ControllerBase
         _statisticService = service;
     }
     
-    [HttpGet("alltask")]
+    [HttpGet("allProjectTask")]
     public async Task<IActionResult> ProjectTaskStats(int projectId)
     {
-        await _statisticService.ProjectTaskStats(projectId);
-        return Ok();
+       var  responses = await _statisticService.ProjectTaskStats(projectId);
+        return Ok(responses);
     }
     
     [HttpGet("sort")]
     public async Task<IActionResult> SortByPriorityAndUser(int projectId, int userId, string sortType)
     {
-        await _statisticService.SortByPriorityAndUser(projectId, userId, sortType);
-        return Ok();
+       var response =  await _statisticService.SortByPriorityAndUser(projectId, userId, sortType);
+        return Ok(response);
     }
     
-    [HttpGet("allusertask")]
+    [HttpGet("allUserProjectTask")]
     public async Task<IActionResult> ProjectTaskStatsByUser(int projectId, int userId)
     {
-        await _statisticService.ProjectTaskStatsByUser(projectId, userId);
-        return Ok();
+        var  responses = await _statisticService.ProjectTaskStatsByUser(projectId, userId);
+        return Ok(responses);
     }
 }

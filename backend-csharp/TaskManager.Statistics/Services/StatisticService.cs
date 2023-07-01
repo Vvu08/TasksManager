@@ -6,67 +6,67 @@ using TaskManager.Statistics.Model;
 
 namespace TaskManager.Statistics.Services;
 
-public class StatisricService : IStatisticService
+public class StatisticService : IStatisticService
 {
     private readonly TaskManagerDbContext _dataContext;
     
-    public StatisricService(TaskManagerDbContext context)
+    public StatisticService(TaskManagerDbContext context)
     {
         _dataContext = context;
     }
     public async Task<List<ProjectTaskStatsResponse>> ProjectTaskStats(int projectId)
     {
-        var tasks = _dataContext.tasks
-            .Include(s => s.status)
-            .Include(s => s.story)
-            .ThenInclude(p => p.project)
-            .Where(i => i.story.project.id == projectId)
-            .GroupBy(s => s.status.name)
-            .Select(n => new ProjectTaskStatsResponse(
-                n.Key,
-                n.Count()));
+        var task = _dataContext.StatusTasks
+            .Include(s => s.Status)
+            .Include(t => t.Task)
+            .ThenInclude(p => p.Story.Project);
 
-
-        List<ProjectTaskStatsResponse> responses = await tasks.ToListAsync();
-        return responses;
+        var response = task.Where(p => p.Task.Story.ProjectId == projectId)
+            .GroupBy(p => p.Status.Name)
+            .Select(a => new ProjectTaskStatsResponse(
+                a.Key,
+                a.Count()));
+        
+       
+        return await response.ToListAsync();
     }
     
     public async Task<List<ProjectTaskStatsResponse>> ProjectTaskStatsByUser(int projectId, int userId)
     {
-        var tasks = _dataContext.tasks
-            .Include(s => s.status)
-            .Include(s => s.story)
-            .ThenInclude(p => p.project)
-            .Where(i => i.story.project.id == projectId && i.user_id == userId)
-            .GroupBy(s => s.status.name)
-            .Select(n => new ProjectTaskStatsResponse(
-                 n.Key,
-                n.Count()));
+        var task = _dataContext.StatusTasks
+            .Include(s => s.Status)
+            .Include(t => t.Task)
+            .ThenInclude(p => p.Story.Project);
 
-
-        List<ProjectTaskStatsResponse> responses = await tasks.ToListAsync();
-        return responses;
+        var response = task.Where(p => p.Task.Story.ProjectId == projectId
+            && p.Task.UserId == userId)
+            .GroupBy(p => p.Status.Name)
+            .Select(a => new ProjectTaskStatsResponse(
+                a.Key,
+                a.Count()));
+        
+       
+        return await response.ToListAsync();
     }
 
-    public async  Task<IEnumerable<task>> SortByPriorityAndUser(int projectId, int userId, string sortType)
+    public async  Task<List<Tasks>> SortByPriorityAndUser(int projectId, int userId, string sortType)
     {
-        IQueryable<task> tasks =  _dataContext.tasks
-            .Include(s => s.story)
-            .ThenInclude(p => p.project)
-            .Where(i => i.story.project_id == projectId && i.user_id == userId);
-
-        
+        var tasks = _dataContext.Tasks
+            .Include(p => p.Story
+                .Project)
+            .Where(p => p.UserId == userId && p.Story.Project.Id == projectId);
+ 
         switch (sortType)
         {
             case "desc":
-                tasks = tasks.OrderByDescending(p => p.priority);
+                tasks = tasks.OrderBy(p => p.Priority);
                 break;;
             case "asc":
-                tasks = tasks.OrderBy(p => p.priority);
+                tasks = tasks.OrderByDescending(p => p.Priority);
                 break;
         }
 
-        List<task> sortedTask = await tasks.ToListAsync();
-        return sortedTask;
+        //List<Tasks> sortedTask = await tasks.ToListAsync();
+        return await tasks.ToListAsync();
     }
 }
