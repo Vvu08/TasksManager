@@ -25,6 +25,21 @@ export const getProject = createAsyncThunk(
   }
 )
 
+export const getAssignees = createAsyncThunk(
+  'projects/getAssignees',
+  async (id, { getState }) => {
+    try {
+      return await instanceOne.get(name + '/' + id + '/users', {
+        headers: {
+          Authorization: 'Bearer ' + getState().auth.token,
+        },
+      })
+    } catch (error) {
+      throw error
+    }
+  }
+)
+
 export const getStoriesByProject = createAsyncThunk(
   'projects/storiesByProject',
   async (id, { getState }) => {

@@ -2,10 +2,9 @@ import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   SelectProjectStatus,
-  SelectRole,
-  RemoveUser,
   Textarea,
   AssignForm,
+  Assignees,
 } from '@/components'
 import ProjectLayout from '@/layouts/ProjectLayout'
 import { getProject, updateProject } from '@/api/projects'
@@ -17,6 +16,7 @@ function Settings() {
   const [open, setOpen] = useState(false)
   const [title, setTitle] = useState(undefined)
   const [status, setStatus] = useState(undefined)
+  const [assignees, setAssignees] = useState([])
   const { id: roleId } = useSelector((state) => state.auth.user.role)
   const dispatch = useDispatch()
 
@@ -114,23 +114,17 @@ function Settings() {
               Add or remove users from your project. Change their roles.
             </p>
           </div>
-          <div className='pl-3 grid grid-cols-2 items-end'>
-            <div className='mt-1'>
-              <h2 className='text-md'>John Doe</h2>
-              <p className='text-xs text-slate-400'>
-                Main programmer of the project.
-              </p>
-            </div>
-            <div className='flex gap-5'>
-              {/* <SelectRole value={role} setValue={setRole} /> */}
-              <RemoveUser />
-            </div>
-          </div>
+          <Assignees assignees={assignees} setAssignees={setAssignees} />
           <div className='mt-2 pl-3 grid grid-cols-2 items-end cursor-pointer text-sky-200 hover:text-sky-300 transition-all'>
             <p onClick={() => setOpen(true)}>+ User</p>
           </div>
         </div>
-        <AssignForm open={open} setOpen={setOpen} />
+        <AssignForm
+          open={open}
+          setOpen={setOpen}
+          assignees={assignees}
+          setAssignees={setAssignees}
+        />
       </section>
     </ProjectLayout>
   )

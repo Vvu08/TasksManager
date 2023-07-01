@@ -16,6 +16,7 @@ export { default as Task } from './tracker/Task'
 export { default as SelectProjectStatus } from './settings/SelectStatus'
 export { default as SelectRole } from './settings/SelectRole'
 export { default as RemoveUser } from './settings/RemoveUser'
+export { default as Assignees } from './settings/Assignees'
 
 export { default as Priority } from './priorities/Priority'
 export { default as SmallPriority } from './priorities/SmallPriority'
@@ -30,3 +31,6 @@ export { default as TaskForm } from './modals/TaskForm'
 export { default as AssignForm } from './modals/AssignForm'
 
 export { default as StatusColor } from './projects/StatusColor'
+
+export { default as Users } from './admin/Users'
+export { default as UserForm } from './admin/UserForm'

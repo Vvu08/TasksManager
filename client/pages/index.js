@@ -18,6 +18,7 @@ export default function Home() {
 
   useEffect(() => {
     user.length === 0 && router.push('/auth/login')
+    user?.role?.id === 2 && router.push('/admin')
   }, [user])
 
   useEffect(() => {

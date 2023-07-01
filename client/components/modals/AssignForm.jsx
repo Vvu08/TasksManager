@@ -5,7 +5,7 @@ import { Textarea } from '@/components'
 import { getUsers } from '@/api/users'
 import { assignUserToProject } from '@/api/projects'
 
-function AssignForm({ open, setOpen }) {
+function AssignForm({ open, setOpen, assignees, setAssignees }) {
   const { id } = useRouter().query
   const [users, setUsers] = useState([])
   const [selectedUser, setSelectedUser] = useState({})
@@ -13,6 +13,7 @@ function AssignForm({ open, setOpen }) {
 
   const submitForm = () => {
     dispatch(assignUserToProject({ projectId: id, userId: selectedUser.id }))
+    setAssignees((prev) => [...prev, selectedUser])
     setOpen(false)
   }
 
@@ -27,7 +28,10 @@ function AssignForm({ open, setOpen }) {
   }, [])
 
   const filteredUsers = users.filter(
-    (user) => user.role.id !== 2 && user.role.id !== 3
+    (user) =>
+      user.role.id !== 2 &&
+      user.role.id !== 3 &&
+      !assignees.find((assignee) => assignee.id === user.id)
   )
 
   return (
@@ -73,7 +77,10 @@ function AssignForm({ open, setOpen }) {
             </svg>
           </button>
         </div>
-        <form className='grid gap-4 mt-4' onSubmit={(e) => e.preventDefault()}>
+        <form
+          className='grid gap-4 grid-cols-2 mt-4'
+          onSubmit={(e) => e.preventDefault()}
+        >
           {filteredUsers.map((user, index) => (
             <div
               key={user.id}
@@ -91,7 +98,7 @@ function AssignForm({ open, setOpen }) {
           ))}
           <button
             onClick={submitForm}
-            className='flex mx-auto gap-1 bg-sky-700/75 hover:bg-sky-700 text-slate-100 px-2 py-2 rounded justify-self-start mb-2'
+            className='flex mx-auto gap-1 bg-sky-700/75 hover:bg-sky-700 text-slate-100 col-span-2 px-2 py-2 rounded justify-self-start mb-2'
           >
             <svg
               width='22'

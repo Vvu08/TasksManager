@@ -14,7 +14,9 @@ function ProjectForm({ open, setOpen }) {
     dispatch(createProject({ title, status })).then(
       (res) =>
         res.payload.status === 201 &&
-        assignUserToProject(id, res.payload.data.id, token)
+        dispatch(
+          assignUserToProject({ userId: id, projectId: res.payload.data.id })
+        )
     )
     setOpen(false)
   }

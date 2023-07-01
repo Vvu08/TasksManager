@@ -73,10 +73,36 @@ export const loginUser = async ({ username, password }) => {
   }
 }
 
-export const updateRole = async (userId, roleId) => {
-  try {
-    return await instanceOne.put(name + '/' + userId + '/updateRole/' + roleId)
-  } catch (error) {
-    return error
+export const updateRole = createAsyncThunk(
+  'users/updateRole',
+  async ({ userId, roleId }, { getState }) => {
+    try {
+      return await instanceOne.put(
+        name + '/' + userId + '/updateRole?newRoleId=' + roleId,
+        {},
+        {
+          headers: {
+            Authorization: 'Bearer ' + getState().auth.token,
+          },
+        }
+      )
+    } catch (error) {
+      return error
+    }
   }
-}
+)
+
+export const deleteUser = createAsyncThunk(
+  'users/deleteUser',
+  async (id, { getState }) => {
+    try {
+      return await instanceOne.delete(name + '/' + id, {
+        headers: {
+          Authorization: 'Bearer ' + getState().auth.token,
+        },
+      })
+    } catch (error) {
+      return error
+    }
+  }
+)
