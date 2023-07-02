@@ -17,13 +17,20 @@ export const getUsers = createAsyncThunk(
   }
 )
 
-export const getUser = async (id) => {
-  try {
-    return await instanceOne.get(name + '/' + id)
-  } catch (error) {
-    return error
+export const getUser = createAsyncThunk(
+  'users/getUser',
+  async (id, { getState }) => {
+    try {
+      return await instanceOne.get(name + '/' + id, {
+        headers: {
+          Authorization: 'Bearer ' + getState().auth.token,
+        },
+      })
+    } catch (error) {
+      return error
+    }
   }
-}
+)
 
 export const getProjectsByUser = createAsyncThunk(
   'users/getProjects',

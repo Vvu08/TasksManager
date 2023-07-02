@@ -109,15 +109,19 @@ function Settings() {
         )}
         <div className='mx-1 my-2 bg-neutral-800 rounded-md p-3'>
           <div>
-            <h2 className='font-semibold'>Users</h2>
+            <div className='flex items-center'>
+              <h2 className='font-semibold'>Users</h2>
+              {roleId === 3 && (
+                <div className='text-sm pl-3 grid grid-cols-2 items-end cursor-pointer text-sky-200 hover:text-sky-300 transition-all'>
+                  <p onClick={() => setOpen(true)}>+ User</p>
+                </div>
+              )}
+            </div>
             <p className='text-sm text-slate-400'>
               Add or remove users from your project. Change their roles.
             </p>
           </div>
           <Assignees assignees={assignees} setAssignees={setAssignees} />
-          <div className='mt-2 pl-3 grid grid-cols-2 items-end cursor-pointer text-sky-200 hover:text-sky-300 transition-all'>
-            <p onClick={() => setOpen(true)}>+ User</p>
-          </div>
         </div>
         <AssignForm
           open={open}

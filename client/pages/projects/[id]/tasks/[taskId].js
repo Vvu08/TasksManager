@@ -1,9 +1,15 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import ProjectLayout from '@/layouts/ProjectLayout'
-import { Textarea, Input, SelectPriority, SelectStatus } from '@/components'
+import {
+  Textarea,
+  Input,
+  SelectPriority,
+  SelectStatus,
+  SelectAssignee,
+} from '@/components'
 import { getTask, updateTask } from '@/api/tasks'
 
 function Task() {
@@ -15,6 +21,8 @@ function Task() {
   const [status, setStatus] = useState(undefined)
   const [assignee, setAssignee] = useState(undefined)
   const [disabled, setDisabled] = useState(true)
+  const { id: roleId } = useSelector((state) => state.auth.user.role)
+  const [loading, setLoading] = useState(true)
   const dispatch = useDispatch()
 
   const handleEdit = () => {
@@ -38,6 +46,8 @@ function Task() {
         setDescription(res.payload.data.description)
         setPriority(res.payload.data.priority)
         setStatus(res.payload.data.status)
+        setAssignee(res.payload.data.assignedUserId)
+        setLoading(false)
       }
     })
   }, [])
@@ -47,20 +57,26 @@ function Task() {
       <section className='m-3 px-10'>
         <div className='flex gap-4 items-center mb-3'>
           <Input value={title} setValue={setTitle} disabled={disabled} />
-          <button className='text-slate-400 text-sm' onClick={handleEdit}>
-            {disabled ? 'Edit' : 'Save'}
-          </button>
+          {roleId === 3 && (
+            <button className='text-slate-400 text-sm' onClick={handleEdit}>
+              {disabled ? 'Edit' : 'Save'}
+            </button>
+          )}
         </div>
         <h2 className='text-lg mb-2'>Details</h2>
         <div className='grid lg:grid-cols-2 gap-4 md:grid-cols-1'>
           <section>
             <div className='pl-2 grid grid-cols-2 gap-2 mb-2'>
               <h3 className='text-slate-300'>Description</h3>
-              <Textarea
-                value={description}
-                setValue={setDescription}
-                disabled={disabled}
-              />
+              {loading ? (
+                <>Loading...</>
+              ) : (
+                <Textarea
+                  value={description}
+                  setValue={setDescription}
+                  disabled={disabled}
+                />
+              )}
             </div>
           </section>
           <section>
@@ -85,20 +101,11 @@ function Task() {
             <h2 className='text-lg mb-2'>People</h2>
             <div className='pl-2 grid grid-cols-2 gap-2 mb-2'>
               <h3 className='text-slate-300'>Assignee</h3>
-              <Textarea
-                value={assignee}
-                setValue={setAssignee}
-                disabled={disabled}
-              />
-            </div>
-            <h2 className='text-lg mb-2'>Story</h2>
-            <div className='pl-2 mb-2'>
-              <h3 className='text-slate-300'>
-                Connected to Story{' '}
-                <Link href={`/projects/${query.id}`}>
-                  <span className='text-sky-500'>`Story Title`</span>
-                </Link>
-              </h3>
+              {loading ? (
+                <>Loading... </>
+              ) : (
+                <SelectAssignee value={assignee} setValue={setAssignee} />
+              )}
             </div>
           </section>
         </div>

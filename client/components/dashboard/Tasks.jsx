@@ -11,9 +11,9 @@ function Tasks({ visibility, storyId, open, setOpen }) {
   const [tasks, setTasks] = useState([])
   const [status, setStatus] = useState(null)
   const [priority, setPriority] = useState(null)
-  const [assignee, setAssignee] = useState(null)
   const dispatch = useDispatch()
 
+  //tasks MUST BE IN ARRAY
   useEffect(() => {
     dispatch(getTasksByStory(storyId)).then((res) => {
       if (res.payload)
@@ -38,7 +38,7 @@ function Tasks({ visibility, storyId, open, setOpen }) {
     <div className={`${visibility ? styles.tasks.open : styles.tasks}`}>
       {tasks.length > 0 ? (
         <div className='overflow-x-hidden text-left pl-3 text-gray-400'>
-          <div className='flex gap-3 m-2 bg-zinc-900 justify-end'>
+          <div className='flex gap-3 my-2 bg-zinc-900 justify-end'>
             <SelectStatus
               value={status}
               setValue={setStatus}
@@ -51,7 +51,6 @@ function Tasks({ visibility, storyId, open, setOpen }) {
               disabled={false}
               isFilter={true}
             />
-            <p className='px-5 py-2'>Assignee</p>
           </div>
           <div className='grid grid-cols-5 bg-zinc-950'>
             <p className='px-5 py-2'>Title</p>
@@ -76,7 +75,7 @@ function Tasks({ visibility, storyId, open, setOpen }) {
                   <Status status={task.status} />
                 </p>
                 <p className='px-5 py-2.5 whitespace-nowrap text-white overflow-hidden'>
-                  {task.assignee}
+                  {task.assignedUserId}
                 </p>
                 <Priority priority={task.priority} />
               </div>

@@ -16,9 +16,9 @@ function Header() {
 
   return (
     <header className='bg-zinc-900 pt-3'>
-      <ul className='grid grid-cols-2 py-4 px-10 font-medium text-slate-200 items-center'>
-        <li className='text-lg '>Tasks Management </li>
-        <li className='flex items-center ml-auto pr-10 '>
+      <div className='grid grid-cols-2 py-4 px-10 font-medium text-slate-200 items-center'>
+        <h1 className='text-lg '>Tasks Management </h1>
+        <div className='flex items-center ml-auto pr-10 '>
           <Link
             href={'/'}
             className='flex items-center gap-1 font-semibold mr-8 text-slate-400 hover:text-slate-300'
@@ -47,7 +47,7 @@ function Header() {
             </svg>
             Projects
           </Link>
-          <p
+          <button
             onClick={handleLogout}
             className='flex items-center gap-1 font-semibold mr-8 text-slate-400  hover:text-slate-300 cursor-pointer'
           >
@@ -73,7 +73,7 @@ function Header() {
               />
             </svg>
             Exit
-          </p>
+          </button>
           {user?.role?.id === 3 && (
             <button
               onClick={() => setOpen(!open)}
@@ -82,8 +82,8 @@ function Header() {
               + Project
             </button>
           )}
-        </li>
-      </ul>
+        </div>
+      </div>
       <ProjectForm open={open} setOpen={setOpen} />
     </header>
   )

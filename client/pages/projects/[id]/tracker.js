@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import ProjectLayout from '@/layouts/ProjectLayout'
 import { Task } from '@/components'
+import { getProjectTasks } from '@/api/statistic'
 
 const data = [
   {
@@ -70,7 +72,30 @@ const data = [
 ]
 
 function Tracker() {
-  const [stores, setStores] = useState(data)
+  const { id } = useRouter().query
+  const [loading, setLoading] = useState(true)
+  const [stores, setStores] = useState([
+    {
+      id: '1',
+      title: 'To Do',
+      items: [],
+    },
+    {
+      id: '2',
+      title: 'In Progress',
+      items: [],
+    },
+    {
+      id: '3',
+      title: 'Pending',
+      items: [],
+    },
+    {
+      id: '4',
+      title: 'Done',
+      items: [],
+    },
+  ])
 
   const handleDragAndDrop = (result) => {
     const { source, destination } = result
@@ -96,49 +121,73 @@ function Tracker() {
     setStores(updatedStores)
   }
 
+  useEffect(() => {
+    getProjectTasks(id).then((res) => {
+      if (res.status === 200) {
+        const updatedStores = [...stores]
+        res.data.forEach((task) => {
+          const storeIndex = updatedStores.findIndex(
+            (store) => store.id === task.status.id.toString()
+          )
+          if (storeIndex !== -1) {
+            updatedStores[storeIndex].items.push(task)
+          }
+        })
+        setStores(updatedStores)
+        setLoading(false)
+        console.log('STORES', stores)
+        console.log('ONE TASK', stores[0].items[0])
+      }
+    })
+  }, [])
+
   return (
     <ProjectLayout>
       <section className='m-3 px-10'>
         <div className='mb-4'>
           <h1 className='text-xl font-bold'>Tasks</h1>
         </div>
-        <DragDropContext onDragEnd={handleDragAndDrop}>
-          <div className='grid grid-cols-4 gap-5'>
-            {stores.map((store, index) => (
-              <div className='rounded-md shadow-md p-4 bg-neutral-800'>
-                <h2 className='font-bold'>{store.title}</h2>
-                <p className='text-sm text-slate-400'>
-                  {store.items.length} tasks
-                </p>
-                <Droppable droppableId={store.id} key={store.id}>
-                  {(provided) => (
-                    <div {...provided.droppableProps} ref={provided.innerRef}>
-                      <div className='status-col'>
-                        {store.items.map((item, index) => (
-                          <Draggable
-                            draggableId={item.id}
-                            key={item.id}
-                            index={index}
-                          >
-                            {(provided) => (
-                              <div
-                                {...provided.dragHandleProps}
-                                {...provided.draggableProps}
-                                ref={provided.innerRef}
-                              >
-                                <Task task={item} />
-                              </div>
-                            )}
-                          </Draggable>
-                        ))}
+        {loading ? (
+          <div>Loading...</div>
+        ) : (
+          <DragDropContext onDragEnd={handleDragAndDrop}>
+            <div className='grid grid-cols-4 gap-5'>
+              {stores.map((store) => (
+                <div className='rounded-md shadow-md p-4 bg-neutral-800'>
+                  <h2 className='font-bold'>{store.title}</h2>
+                  <p className='text-sm text-slate-400'>
+                    {store.items.length} tasks
+                  </p>
+                  <Droppable droppableId={store.id} key={store.id}>
+                    {(provided) => (
+                      <div {...provided.droppableProps} ref={provided.innerRef}>
+                        <div className='status-col'>
+                          {store.items.map((item, index) => (
+                            <Draggable
+                              draggableId={item.taskId.toString()}
+                              key={item.taskId.toString()}
+                              index={index}
+                            >
+                              {(provided) => (
+                                <div
+                                  {...provided.dragHandleProps}
+                                  {...provided.draggableProps}
+                                  ref={provided.innerRef}
+                                >
+                                  <Task item={item} />
+                                </div>
+                              )}
+                            </Draggable>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </Droppable>
-              </div>
-            ))}
-          </div>
-        </DragDropContext>
+                    )}
+                  </Droppable>
+                </div>
+              ))}
+            </div>
+          </DragDropContext>
+        )}
       </section>
     </ProjectLayout>
   )

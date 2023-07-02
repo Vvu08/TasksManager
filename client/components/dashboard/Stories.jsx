@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getStoriesByProject } from '@/api/projects'
 import { Tasks, StoryForm } from '@/components'
+import { setDateToDisplay } from '@/utils/setDate'
 
 function Stories() {
   const { query } = useRouter()
   const [open, setOpen] = useState(false)
   const [stories, setStories] = useState([])
+  const { id: roleId } = useSelector((state) => state.auth.user.role)
   const dispatch = useDispatch()
 
+  //stories MUST BE IN ARRAY
   useEffect(() => {
     dispatch(getStoriesByProject(Number(query.id))).then((res) => {
       if (res.payload)
@@ -31,12 +34,14 @@ function Stories() {
     <section className='mx-3 p-5 border-solid border-2 border-zinc-800 bg-zinc-900 rounded-md'>
       <div className='flex'>
         <h1 className='text-lg'>Stories</h1>
-        <button
-          onClick={() => setOpen(!open)}
-          className='text-sm ml-auto text-slate-400 hover:text-slate-300'
-        >
-          + Add Story
-        </button>
+        {roleId === 3 && (
+          <button
+            onClick={() => setOpen(!open)}
+            className='text-sm ml-auto text-slate-400 hover:text-slate-300'
+          >
+            + Add Story
+          </button>
+        )}
       </div>
       <div className='grid grid-cols-5 w-full shadow-md sm:rounded-lg mt-2'>
         <h2 scope='col' className='px-6 py-3 bg-stone-900'>
@@ -72,10 +77,10 @@ function Stories() {
                   {story.description}
                 </p>
                 <p className='px-6 py-4 font-medium whitespace-nowrap text-white overflow-hidden'>
-                  {story.startDate}
+                  {setDateToDisplay(new Date(story.startDate))}
                 </p>
                 <p className='px-6 py-4 font-medium whitespace-nowrap text-white overflow-hidden'>
-                  {story.endDate}
+                  {setDateToDisplay(new Date(story.endDate))}
                 </p>
               </Link>
               <p

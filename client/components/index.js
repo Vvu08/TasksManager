@@ -32,5 +32,7 @@ export { default as AssignForm } from './modals/AssignForm'
 
 export { default as StatusColor } from './projects/StatusColor'
 
+export { default as SelectAssignee } from './tasks/SelectAssignee'
+
 export { default as Users } from './admin/Users'
 export { default as UserForm } from './admin/UserForm'

@@ -52,9 +52,17 @@ export const createTask = createAsyncThunk(
 
 export const assignUserToTask = createAsyncThunk(
   'tasks/assignToTask',
-  async (userId, taskId) => {
+  async ({ taskId, userId }, { getState }) => {
     try {
-      return await instanceOne.post(name + '/' + taskId + '/assign/' + userId)
+      return await instanceOne.post(
+        name + '/' + taskId + '/assign/' + userId,
+        {},
+        {
+          headers: {
+            Authorization: 'Bearer ' + getState().auth.token,
+          },
+        }
+      )
     } catch (error) {
       throw error
     }

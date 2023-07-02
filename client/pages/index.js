@@ -9,10 +9,6 @@ import Layout from '../layouts'
 export default function Home() {
   const user = useSelector((state) => state.auth.user)
   const projects = useSelector((state) => state.projects.projects)
-  const chartData = {
-    labels: ['Tasks Done', 'In Progress', 'Tasks to Do', 'Tasks to Review'],
-    values: [30, 3, 25, 5],
-  }
   const router = useRouter()
   const dispatch = useDispatch()
 
@@ -30,7 +26,7 @@ export default function Home() {
       <article className='px-10 py-5'>
         <section className='grid lg:grid-cols-2 md:grid-cols-1'>
           <Hero />
-          <Statistic data={chartData} />
+          <Statistic />
         </section>
         <h1 className='text-xl mt-5 ml-5'>Your projects</h1>
         {projects.length > 0 ? (
@@ -56,15 +52,3 @@ export default function Home() {
     </Layout>
   )
 }
-
-/* export const getStaticProps = wrapper.getStaticProps((store) => async () => {
-  const { dispatch, getState } = store
-  await dispatch(getProjectsByUser({ id: 2 }))
-  const projects = getState().projects.projects
-
-  return {
-    props: {
-      projects,
-    },
-  }
-}) */

@@ -81,47 +81,55 @@ function AssignForm({ open, setOpen, assignees, setAssignees }) {
           className='grid gap-4 grid-cols-2 mt-4'
           onSubmit={(e) => e.preventDefault()}
         >
-          {filteredUsers.map((user, index) => (
-            <div
-              key={user.id}
-              onClick={() => setSelectedUser(user)}
-              className={`flex justify-items-stretch border-2 border-solid p-2 rounded ${
-                user === selectedUser
-                  ? 'bg-neutral-900 border-sky-900'
-                  : 'border-neutral-600'
-              }`}
-            >
-              <label htmlFor={user.id}>
-                {index + 1}. {user.username} - {user.role.type}
-              </label>
+          {filteredUsers.length > 0 ? (
+            <>
+              {filteredUsers.map((user, index) => (
+                <div
+                  key={user.id}
+                  onClick={() => setSelectedUser(user)}
+                  className={`flex justify-items-stretch border-2 border-solid p-2 rounded ${
+                    user === selectedUser
+                      ? 'bg-neutral-900 border-sky-900'
+                      : 'border-neutral-600'
+                  }`}
+                >
+                  <label htmlFor={user.id}>
+                    {index + 1}. {user.username} - {user.role.type}
+                  </label>
+                </div>
+              ))}
+              <button
+                onClick={submitForm}
+                className='flex mx-auto gap-1 bg-sky-700/75 hover:bg-sky-700 text-slate-100 col-span-2 px-2 py-2 rounded justify-self-start mb-2'
+              >
+                <svg
+                  width='22'
+                  height='22'
+                  viewBox='0 0 24 24'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
+                >
+                  <path
+                    d='M9 10L12.2581 12.4436C12.6766 12.7574 13.2662 12.6957 13.6107 12.3021L20 5'
+                    stroke='#fff'
+                    strokeWidth='2'
+                    strokeLinecap='round'
+                  />
+                  <path
+                    d='M21 12C21 13.8805 20.411 15.7137 19.3156 17.2423C18.2203 18.7709 16.6736 19.9179 14.893 20.5224C13.1123 21.1268 11.187 21.1583 9.38744 20.6125C7.58792 20.0666 6.00459 18.9707 4.85982 17.4789C3.71505 15.987 3.06635 14.174 3.00482 12.2945C2.94329 10.415 3.47203 8.56344 4.51677 6.99987C5.56152 5.4363 7.06979 4.23925 8.82975 3.57685C10.5897 2.91444 12.513 2.81996 14.3294 3.30667'
+                    stroke='#fff'
+                    strokeWidth='2'
+                    strokeLinecap='round'
+                  />
+                </svg>
+                Assign Selected User
+              </button>
+            </>
+          ) : (
+            <div className='col-span-2 text-center text-slate-300'>
+              No users available to assign
             </div>
-          ))}
-          <button
-            onClick={submitForm}
-            className='flex mx-auto gap-1 bg-sky-700/75 hover:bg-sky-700 text-slate-100 col-span-2 px-2 py-2 rounded justify-self-start mb-2'
-          >
-            <svg
-              width='22'
-              height='22'
-              viewBox='0 0 24 24'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path
-                d='M9 10L12.2581 12.4436C12.6766 12.7574 13.2662 12.6957 13.6107 12.3021L20 5'
-                stroke='#fff'
-                strokeWidth='2'
-                strokeLinecap='round'
-              />
-              <path
-                d='M21 12C21 13.8805 20.411 15.7137 19.3156 17.2423C18.2203 18.7709 16.6736 19.9179 14.893 20.5224C13.1123 21.1268 11.187 21.1583 9.38744 20.6125C7.58792 20.0666 6.00459 18.9707 4.85982 17.4789C3.71505 15.987 3.06635 14.174 3.00482 12.2945C2.94329 10.415 3.47203 8.56344 4.51677 6.99987C5.56152 5.4363 7.06979 4.23925 8.82975 3.57685C10.5897 2.91444 12.513 2.81996 14.3294 3.30667'
-                stroke='#fff'
-                strokeWidth='2'
-                strokeLinecap='round'
-              />
-            </svg>
-            Assign Selected User
-          </button>
+          )}
         </form>
       </section>
     </article>

@@ -1,8 +1,34 @@
 import { useEffect, useState } from 'react'
 import { Chart } from 'chart.js'
+import { getUserStatistics } from '@/api/statistic'
+import { useRouter } from 'next/router'
+import { useSelector } from 'react-redux'
 
-function Statistic({ data }) {
+function Statistic() {
+  const { id: userId } = useSelector((state) => state.auth.user)
   const [type, setType] = useState('bar')
+  const [data, setData] = useState({
+    labels: ['Tasks to Do', 'In Progress', 'Tasks Pending', 'Tasks Done'],
+    values: [0, 0, 0, 0],
+  })
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    getUserStatistics(userId).then((res) => {
+      if (res.status === 200) {
+        setData({
+          ...data,
+          values: [
+            res.data[0]?.count || 0,
+            res.data[1]?.count || 0,
+            res.data[2]?.count || 0,
+            res.data[3]?.count || 0,
+          ],
+        })
+        setLoading(false)
+      }
+    })
+  }, [])
 
   useEffect(() => {
     var ctx = document.getElementById('chart').getContext('2d')

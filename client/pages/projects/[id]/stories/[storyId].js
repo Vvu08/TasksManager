@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getStory } from '@/api/stories'
 import { updateStory } from '@/api/stories'
 import ProjectLayout from '@/layouts/ProjectLayout'
@@ -17,6 +17,7 @@ function Story() {
   const [startDate, setStartDate] = useState(undefined)
   const [endDate, setEndDate] = useState(undefined)
   const [disabled, setDisabled] = useState(true)
+  const { id: roleId } = useSelector((state) => state.auth.user.role)
   const dispatch = useDispatch()
 
   const handleEdit = () => {
@@ -46,7 +47,7 @@ function Story() {
         setLoading(false)
       }
     })
-  }, [query.storyId])
+  }, [])
 
   return (
     <ProjectLayout>
@@ -54,9 +55,11 @@ function Story() {
         <section className='m-3 px-10'>
           <div className='flex gap-4 items-center mb-3'>
             <Input value={title} setValue={setTitle} disabled={disabled} />
-            <button className='text-slate-400 text-sm' onClick={handleEdit}>
-              {disabled ? 'Edit' : 'Save'}
-            </button>
+            {roleId === 3 && (
+              <button className='text-slate-400 text-sm' onClick={handleEdit}>
+                {disabled ? 'Edit' : 'Save'}
+              </button>
+            )}
           </div>
           <h2 className='text-lg mb-2'>Details</h2>
           <div className='grid lg:grid-cols-2 gap-4 md:grid-cols-1'>
@@ -90,12 +93,14 @@ function Story() {
             </section>
           </div>
           <h2 className='text-lg mb-2'>Tasks</h2>
-          <button
-            onClick={() => setOpen(!open)}
-            className='text-sm ml-auto text-slate-400 hover:text-slate-300'
-          >
-            + Add Task
-          </button>
+          {roleId === 3 && (
+            <button
+              onClick={() => setOpen(!open)}
+              className='text-sm ml-auto text-slate-400 hover:text-slate-300'
+            >
+              + Add Task
+            </button>
+          )}
           <Tasks
             visibility={true}
             storyId={query.storyId}
