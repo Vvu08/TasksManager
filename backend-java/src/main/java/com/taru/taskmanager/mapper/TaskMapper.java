@@ -12,6 +12,7 @@ public class TaskMapper {
                 .title(task.getTitle())
                 .description(task.getDescription())
                 .priority(task.getPriority())
+                .taskCreatorId(task.getTaskCreator().getId())
                 .build();
     }
 

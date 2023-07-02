@@ -17,4 +17,5 @@ public class TaskDTO {
     private int priority;
     private StatusDTO status;
     private Integer assignedUserId;
+    private int taskCreatorId;
 }
