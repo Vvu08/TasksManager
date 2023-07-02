@@ -116,6 +116,7 @@ public class TaskServiceImpl implements TaskService {
         return tasks.stream()
                 .map(task -> {
                     TaskDTO result = TaskMapper.mapToDto(task);
+                    result.setAssignedUserId(task.getUser() == null ? null : task.getUser().getId());
                     result.setStatus(StatusMapper.mapToDto(statusTasksRepository.findByTaskId(task.getId()).get().getStatus()));
                     return result;
                 })
@@ -130,6 +131,7 @@ public class TaskServiceImpl implements TaskService {
         return tasks.stream()
                 .map(task -> {
                     TaskDTO result = TaskMapper.mapToDto(task);
+                    result.setAssignedUserId(task.getUser() == null ? null : task.getUser().getId());
                     result.setStatus(StatusMapper.mapToDto(statusTasksRepository.findByTaskId(task.getId()).get().getStatus()));
                     return result;
                 })
@@ -144,6 +146,7 @@ public class TaskServiceImpl implements TaskService {
         return tasks.stream()
                 .map(task -> {
                     TaskDTO result = TaskMapper.mapToDto(task);
+                    result.setAssignedUserId(task.getUser() == null ? null : task.getUser().getId());
                     result.setStatus(StatusMapper.mapToDto(statusTasksRepository.findByTaskId(task.getId()).get().getStatus()));
                     return result;
                 })

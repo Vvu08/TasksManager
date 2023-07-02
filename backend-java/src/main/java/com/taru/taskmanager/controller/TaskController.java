@@ -60,7 +60,7 @@ public class TaskController {
                 HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('MANAGER')")
     @PostMapping("/task/{taskId}/assign/{userId}")
     public ResponseEntity<String> assignUserToTask(
             @PathVariable("taskId") int taskId,
