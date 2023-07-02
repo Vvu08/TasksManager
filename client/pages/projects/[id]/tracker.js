@@ -98,7 +98,7 @@ function Tracker() {
       items: [],
     },
   ])
-  const { id: roleId } = useSelector((state) => state.auth.user.role)
+  const { roleId } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
 
   const handleDragAndDrop = (result) => {

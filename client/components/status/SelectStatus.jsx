@@ -10,7 +10,7 @@ function SelectStatus({ value, setValue, isFilter }) {
   const { taskId } = useRouter().query
   const { isOpen, toggle } = usePopup('status-dropdown')
   const matchedStatus = statuses.find((status) => status.id === value?.id)
-  const { id: roleId } = useSelector((state) => state.auth.user.role)
+  const { roleId } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
 
   const selectStatus = (selectedValue) => {

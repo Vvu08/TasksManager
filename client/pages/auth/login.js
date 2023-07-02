@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import Layout from '@/layouts/AuthLayout'
 import { loginUser } from '@/api/users'
-import { setUser, setToken } from '@/redux/slices/authSlice'
+import { setUser, setToken, setRoleId } from '@/redux/slices/authSlice'
 import { useDispatch } from 'react-redux'
 
 function Login() {
@@ -27,8 +27,10 @@ function Login() {
       if (res.status === 200) {
         dispatch(setUser(res.data.user))
         dispatch(setToken(res.data.accessToken))
+        dispatch(setRoleId(res.data.user.role.id))
         localStorage.setItem('user', JSON.stringify(res.data.user))
         localStorage.setItem('token', JSON.stringify(res.data.accessToken))
+        localStorage.setItem('roleId', JSON.stringify(res.data.user.role.id))
         router.push('/')
       } else setError('Something went wrong')
     })

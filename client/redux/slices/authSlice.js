@@ -12,6 +12,10 @@ export const authSlice = createSlice({
       typeof window !== 'undefined'
         ? JSON.parse(localStorage.getItem('token')) || ''
         : '',
+    roleId:
+      typeof window !== 'undefined'
+        ? JSON.parse(localStorage.getItem('roleId')) || 1
+        : 1,
   },
   reducers: {
     setUser(state, action) {
@@ -19,6 +23,9 @@ export const authSlice = createSlice({
     },
     setToken(state, action) {
       state.token = action.payload
+    },
+    setRoleId(state, action) {
+      state.roleId = action.payload
     },
   },
   extraReducers: (builder) => {
@@ -31,6 +38,6 @@ export const authSlice = createSlice({
   },
 })
 
-export const { setUser, setToken } = authSlice.actions
+export const { setUser, setToken, setRoleId } = authSlice.actions
 
 export default authSlice.reducer

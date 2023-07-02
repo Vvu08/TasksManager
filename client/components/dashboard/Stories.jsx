@@ -10,16 +10,15 @@ function Stories() {
   const { query } = useRouter()
   const [open, setOpen] = useState(false)
   const [stories, setStories] = useState([])
-  const { id: roleId } = useSelector((state) => state.auth.user.role)
+  const { roleId } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
 
-  //stories MUST BE IN ARRAY
   useEffect(() => {
     dispatch(getStoriesByProject(Number(query.id))).then((res) => {
       if (res.payload)
         if (res.payload.status === 200) setStories(res.payload.data)
     })
-  }, [])
+  }, [stories])
 
   const [visibility, setVisibility] = useState(
     Array(stories.length).fill(false)

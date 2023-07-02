@@ -17,7 +17,7 @@ function Story() {
   const [startDate, setStartDate] = useState(undefined)
   const [endDate, setEndDate] = useState(undefined)
   const [disabled, setDisabled] = useState(true)
-  const { id: roleId } = useSelector((state) => state.auth.user.role)
+  const { roleId } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
 
   const handleEdit = () => {

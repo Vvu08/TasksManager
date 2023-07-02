@@ -20,7 +20,6 @@ function Tasks({ visibility, storyId, open, setOpen }) {
   const [priority, setPriority] = useState(null)
   const dispatch = useDispatch()
 
-  //tasks MUST BE IN ARRAY
   useEffect(() => {
     dispatch(getTasksByStory(storyId)).then((res) => {
       if (res.payload)
@@ -28,7 +27,7 @@ function Tasks({ visibility, storyId, open, setOpen }) {
           setTasks(res.payload.data)
         }
     })
-  }, [])
+  }, [tasks])
 
   const filteredTasks = tasks.filter((task) => {
     if (priority && task.priority !== priority) {
