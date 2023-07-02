@@ -102,6 +102,7 @@ public class TaskServiceImpl implements TaskService {
                 .orElseThrow(() -> new TaskNotFoundException("Task with id = " + taskId + " - not found!"));
 
         TaskDTO result = TaskMapper.mapToDto(task);
+        result.setAssignedUserId(task.getUser() == null ? null : task.getUser().getId());
         result.setStatus(StatusMapper.mapToDto(statusTasksRepository.findByTaskId(task.getId()).get().getStatus()));
 
         return result;

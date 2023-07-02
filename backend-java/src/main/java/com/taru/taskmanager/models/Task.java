@@ -30,8 +30,6 @@ public class Task {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "story_id")
     private Story story;
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<StatusTasks> statusTasks = new ArrayList<>();
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
