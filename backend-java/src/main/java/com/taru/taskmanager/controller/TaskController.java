@@ -46,7 +46,7 @@ public class TaskController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('MANAGER')")
     @PutMapping("/task/{taskId}/updateStatus/{statusId}")
     public ResponseEntity<String> updateTaskStatusByTaskId(
             @PathVariable("taskId") int taskId,
