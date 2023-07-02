@@ -31,15 +31,13 @@ public class StatisticService : IStatisticService
         return await response.ToListAsync();
     }
     
-    public async Task<List<ProjectTaskStatsResponse>> ProjectTaskStatsByUser(int projectId, int userId)
+    public async Task<List<ProjectTaskStatsResponse>> ProjectTaskStatsByUser(int userId)
     {
         var task = _dataContext.StatusTasks
             .Include(s => s.Status)
-            .Include(t => t.Task)
-            .ThenInclude(p => p.Story.Project);
+            .Include(t => t.Task);
 
-        var response = task.Where(p => p.Task.Story.ProjectId == projectId
-            && p.Task.UserId == userId)
+        var response = task.Where(p => p.Task.UserId == userId)
             .GroupBy(p => p.Status.Name)
             .Select(a => new ProjectTaskStatsResponse(
                 a.Key,

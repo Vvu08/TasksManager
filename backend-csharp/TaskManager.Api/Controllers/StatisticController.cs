@@ -36,9 +36,9 @@ public class StatisticController : ControllerBase
     }
     
     [HttpGet("allUserProjectTask")]
-    public async Task<IActionResult> ProjectTaskStatsByUser(int projectId, int userId)
+    public async Task<IActionResult> ProjectTaskStatsByUser(int userId)
     {
-        var  responses = await _statisticService.ProjectTaskStatsByUser(projectId, userId);
+        var  responses = await _statisticService.ProjectTaskStatsByUser(userId);
         return Ok(responses);
     }
 
