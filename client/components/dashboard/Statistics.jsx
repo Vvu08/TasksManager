@@ -12,9 +12,15 @@ function Statistics() {
   useEffect(() => {
     getTaskStatistics(id).then((res) => {
       if (res.status === 200) {
-        setTodos(res.data[0]?.count || 0)
-        setInProgress(res.data[1]?.count || 0)
-        setDones(res.data[2]?.count || 0)
+        res.data.forEach((item) => {
+          if (item.status === 'TO DO') {
+            setTodos(item.count)
+          } else if (item.status === 'In Progress') {
+            setInProgress(item.count)
+          } else if (item.status === 'Done') {
+            setDones(item.count)
+          }
+        })
         setLoading(false)
       }
     })

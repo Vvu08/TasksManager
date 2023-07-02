@@ -48,14 +48,6 @@ export const getProjectsByUser = createAsyncThunk(
   }
 )
 
-export const getTasksByUser = async (id) => {
-  try {
-    return await instanceOne.get(name + '/' + id + '/task')
-  } catch (error) {
-    throw error
-  }
-}
-
 export const createUser = async (username, email, password, jobTitle) => {
   try {
     return await instanceOne.post('auth/register', {

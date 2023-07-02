@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,17 +8,19 @@ import {
   SelectPriority,
   SelectStatus,
   SelectAssignee,
+  TaskCreator,
 } from '@/components'
 import { getTask, updateTask } from '@/api/tasks'
 
 function Task() {
-  const { query } = useRouter()
+  const router = useRouter()
   const [id, setId] = useState(undefined)
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [priority, setPriority] = useState(undefined)
   const [status, setStatus] = useState(undefined)
   const [assignee, setAssignee] = useState(undefined)
+  const [creator, setCreator] = useState(undefined)
   const [disabled, setDisabled] = useState(true)
   const { id: roleId } = useSelector((state) => state.auth.user.role)
   const [loading, setLoading] = useState(true)
@@ -39,7 +40,7 @@ function Task() {
   }
 
   useEffect(() => {
-    dispatch(getTask(query.taskId)).then((res) => {
+    dispatch(getTask(router.query.taskId)).then((res) => {
       if (res.payload) {
         setId(res.payload.data.id)
         setTitle(res.payload.data.title)
@@ -47,6 +48,7 @@ function Task() {
         setPriority(res.payload.data.priority)
         setStatus(res.payload.data.status)
         setAssignee(res.payload.data.assignedUserId)
+        setCreator(res.payload.data.taskCreatorId)
         setLoading(false)
       }
     })
@@ -106,6 +108,10 @@ function Task() {
               ) : (
                 <SelectAssignee value={assignee} setValue={setAssignee} />
               )}
+            </div>
+            <div className='pl-2 grid grid-cols-2 gap-2 mb-2 pt-3'>
+              <h3 className='text-slate-300'>Creator</h3>
+              {loading ? <>Loading... </> : <TaskCreator creatorId={creator} />}
             </div>
           </section>
         </div>

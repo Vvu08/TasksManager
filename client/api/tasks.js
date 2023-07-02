@@ -92,19 +92,21 @@ export const updateTask = createAsyncThunk(
   }
 )
 
-//OTHER SERVER
-export const updateTaskStatus = async (id, statusId) => {
-  try {
-    return await instanceOne.put(name + '/' + id + '/updateStatus/' + statusId)
-  } catch (error) {
-    throw error
+export const updateTaskStatus = createAsyncThunk(
+  'tasks/updateTaskStatus',
+  async ({ taskId, statusId }, { getState }) => {
+    try {
+      return await instanceOne.put(
+        name + '/' + taskId + '/updateStatus/' + statusId,
+        {},
+        {
+          headers: {
+            Authorization: 'Bearer ' + getState().auth.token,
+          },
+        }
+      )
+    } catch (error) {
+      throw error
+    }
   }
-}
-
-export const deleteTask = async (id) => {
-  try {
-    return await instanceOne.delete(name + '/' + id + '/delete')
-  } catch (error) {
-    throw error
-  }
-}
+)

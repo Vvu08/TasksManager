@@ -8,9 +8,11 @@ function Task({ item }) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getUser(item.task.userId)).then((res) => {
-      res.payload.status === 200 && setUsername(res.payload.data.username)
-    })
+    if (!item.task.userId) return setUsername('nobody')
+    else
+      dispatch(getUser(item.task.userId)).then((res) => {
+        res.payload.status === 200 && setUsername(res.payload.data.username)
+      })
   }, [])
 
   return (
@@ -21,8 +23,7 @@ function Task({ item }) {
         </p>
         <SmallPriority priority={item.task.priority} />
         <p className='font-medium whitespace-nowrap text-sm text-white'>
-          Assigned to{' '}
-          <span className='text-sky-500'>{username || 'nobody'}</span>
+          Assigned to <span className='text-sky-500'>{username}</span>
         </p>
       </div>
     </section>

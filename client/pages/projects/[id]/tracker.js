@@ -1,9 +1,11 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import ProjectLayout from '@/layouts/ProjectLayout'
 import { Task } from '@/components'
 import { getProjectTasks } from '@/api/statistic'
+import { updateTaskStatus } from '@/api/tasks'
 
 const data = [
   {
@@ -96,9 +98,14 @@ function Tracker() {
       items: [],
     },
   ])
+  const { id: roleId } = useSelector((state) => state.auth.user.role)
+  const dispatch = useDispatch()
 
   const handleDragAndDrop = (result) => {
     const { source, destination } = result
+
+    if (roleId === 1 && destination.droppableId === '4') return
+
     if (!destination) return
     if (
       source.droppableId === destination.droppableId &&
@@ -119,6 +126,9 @@ function Tracker() {
     updatedStores[sourceColumnIndex] = sourceColumn
     updatedStores[destinationColumnIndex] = destinationColumn
     setStores(updatedStores)
+    dispatch(
+      updateTaskStatus({ taskId: item.taskId, statusId: destinationColumn.id })
+    )
   }
 
   useEffect(() => {
@@ -135,8 +145,6 @@ function Tracker() {
         })
         setStores(updatedStores)
         setLoading(false)
-        console.log('STORES', stores)
-        console.log('ONE TASK', stores[0].items[0])
       }
     })
   }, [])

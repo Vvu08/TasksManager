@@ -50,7 +50,7 @@ function SelectAssignee({ value, setValue }) {
         </svg>
       </div>
       {isOpen && (
-        <ul className='assignee-dropdown grid grid-rows-4 mt-1 ml-2 bg-gray-800 rounded-lg absolute'>
+        <ul className='assignee-dropdown grid mt-1 ml-2 bg-gray-800 rounded-lg absolute'>
           {assignees.map((assignee) => (
             <li
               key={assignee.id}

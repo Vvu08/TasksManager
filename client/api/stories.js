@@ -2,14 +2,6 @@ import { instanceOne } from './axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 const name = 'story'
 
-export const getStories = async () => {
-  try {
-    return await instanceOne.get(name)
-  } catch (error) {
-    throw error
-  }
-}
-
 export const getStory = createAsyncThunk(
   'stories/getStory',
   async (id, { getState }) => {
@@ -94,11 +86,3 @@ export const updateStory = createAsyncThunk(
     }
   }
 )
-
-export const deleteStory = async (id) => {
-  try {
-    return await instanceOne.delete(name + '/' + id + '/delete')
-  } catch (error) {
-    throw error
-  }
-}

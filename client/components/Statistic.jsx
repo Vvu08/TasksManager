@@ -11,21 +11,33 @@ function Statistic() {
     labels: ['Tasks to Do', 'In Progress', 'Tasks Pending', 'Tasks Done'],
     values: [0, 0, 0, 0],
   })
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     getUserStatistics(userId).then((res) => {
       if (res.status === 200) {
+        const counts = [0, 0, 0, 0]
+        res.data.forEach((item) => {
+          switch (item.status) {
+            case 'TO DO':
+              counts[0] = item.count
+              break
+            case 'In Progress':
+              counts[1] = item.count
+              break
+            case 'Pending':
+              counts[2] = item.count
+              break
+            case 'Done':
+              counts[3] = item.count
+              break
+            default:
+              break
+          }
+        })
         setData({
           ...data,
-          values: [
-            res.data[0]?.count || 0,
-            res.data[1]?.count || 0,
-            res.data[2]?.count || 0,
-            res.data[3]?.count || 0,
-          ],
+          values: counts,
         })
-        setLoading(false)
       }
     })
   }, [])

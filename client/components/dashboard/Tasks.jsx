@@ -3,7 +3,14 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { Priority, SelectPriority, SelectStatus, Status, TaskForm } from '..'
+import {
+  Assignee,
+  Priority,
+  SelectPriority,
+  SelectStatus,
+  Status,
+  TaskForm,
+} from '..'
 import { getTasksByStory } from '@/api/stories'
 
 function Tasks({ visibility, storyId, open, setOpen }) {
@@ -74,9 +81,7 @@ function Tasks({ visibility, storyId, open, setOpen }) {
                 <p className='px-5 py-2.5 whitespace-nowrap text-white overflow-hidden'>
                   <Status status={task.status} />
                 </p>
-                <p className='px-5 py-2.5 whitespace-nowrap text-white overflow-hidden'>
-                  {task.assignedUserId}
-                </p>
+                <Assignee id={task.assignedUserId} />
                 <Priority priority={task.priority} />
               </div>
             </Link>

@@ -1,16 +1,35 @@
-import React, { useState, useEffect } from 'react'
-import statuses from '@/utils/status'
-import SVGRenderer from '../SVGRenderer'
+import React from 'react'
+import { useRouter } from 'next/router'
+import { useDispatch, useSelector } from 'react-redux'
 import usePopup from '@/hooks/usePopup'
+import SVGRenderer from '../SVGRenderer'
+import statuses from '@/utils/status'
+import { updateTaskStatus } from '@/api/tasks'
 
 function SelectStatus({ value, setValue, isFilter }) {
+  const { taskId } = useRouter().query
   const { isOpen, toggle } = usePopup('status-dropdown')
   const matchedStatus = statuses.find((status) => status.id === value?.id)
+  const { id: roleId } = useSelector((state) => state.auth.user.role)
+  const dispatch = useDispatch()
 
   const selectStatus = (selectedValue) => {
+    dispatch(
+      updateTaskStatus({
+        taskId,
+        statusId: selectedValue.id,
+      })
+    )
     setValue(selectedValue)
     toggle()
   }
+
+  const filteredStatuses = statuses.filter((status) => {
+    if (roleId === 1 && status.id === 4) {
+      return false
+    }
+    return true
+  })
 
   return (
     <div>
@@ -62,7 +81,7 @@ function SelectStatus({ value, setValue, isFilter }) {
         </svg>
       </div>
       {isOpen && (
-        <ul className='status-dropdown grid grid-rows-4 mt-1 ml-2 bg-gray-800 rounded-lg absolute'>
+        <ul className='status-dropdown grid mt-1 ml-2 bg-gray-800 rounded-lg absolute'>
           {isFilter && (
             <li
               key={4}
@@ -73,7 +92,7 @@ function SelectStatus({ value, setValue, isFilter }) {
               All statuses
             </li>
           )}
-          {statuses.map((status, index) => (
+          {filteredStatuses.map((status, index) => (
             <li
               key={index}
               type='button'
