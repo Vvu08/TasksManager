@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using TaskManager.Notification;
 using TaskManager.Notification.Context;
+using TaskManager.Notification.Interfaces;
+using TaskManager.Notification.Services;
 using TaskManager.Statistics.Interfaces;
 using TaskManager.Statistics.Services;
 
@@ -17,15 +19,16 @@ builder.Services.AddDbContext<TaskManagerDbContext>(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("CorsPolicy",
-        corsPolicyBuilder => corsPolicyBuilder
-            .WithOrigins("http://localhost:3000")
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
             .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials());
+            .AllowAnyHeader();
+    });
 });
 
 builder.Services.AddScoped<IStatisticService, StatisticService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
 
 var app = builder.Build();
 

@@ -49,6 +49,18 @@ public class StatisticService : IStatisticService
         return await response.ToListAsync();
     }
 
+    public async Task<List<StatusTasks>> ProjectTasks(int projectId)
+    {
+        var task = _dataContext.StatusTasks
+            .Include(s => s.Status)
+            .Include(t => t.Task);
+
+
+        var response = task.Where(p => p.Task.Story.ProjectId == projectId);
+        
+        return await response.ToListAsync();
+    }
+    
     public async  Task<List<Tasks>> SortByPriorityAndUser(int projectId, int userId, string sortType)
     {
         var tasks = _dataContext.Tasks
